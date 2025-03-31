@@ -1,4 +1,4 @@
-> Добро пожаловать в проект **FRIDAY_SIM** — симуляция архитектуры робота, сделанная с душой 🤖
+> Добро пожаловать в проект **FRIDAY_SIM** — билет на порше с милфой 🤖
 
 ---
 
@@ -8,9 +8,17 @@
 
 ```bash
 git clone https://github.com/Sulimowski/Friday_Mini.git
-📥 Скачать проект
 
-🧨 DEAD LINE
+
+```markdown
+## 📥 Скачать проект
+
+[**⬇️ Скачать FRIDAY_SIM (ZIP)**](https://github.com/Sulimowski/Friday_Mini/archive/refs/heads/master.zip)
+
+
+---
+
+**🧨 DEAD LINE **
 Проект по архитектуре робота
 
 Симуляция в PyBullet
