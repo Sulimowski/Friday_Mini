@@ -1,0 +1,231 @@
+<?xml version="1.0" ?>
+<robot name="robot_arm">
+
+  <!-- BASE -->
+  <link name="base">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="5"/>
+      <inertia ixx="0.1" iyy="0.1" izz="0.1" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <mesh filename="BASE_S.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="BASE_S.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- SHOULDER -->
+  <joint name="joint_0" type="revolute">
+    <parent link="base"/>
+    <child link="shoulder"/>
+    <origin xyz="0 0 0.18"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.1416" upper="3.1416" effort="10" velocity="1"/>
+  </joint>
+  <link name="shoulder">
+    <inertial>
+      <origin xyz="0 0 0.09" rpy="0 0 0"/>
+      <mass value="3"/>
+      <inertia ixx="0.02" iyy="0.02" izz="0.02" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.18"/>
+      <geometry>
+        <mesh filename="A1_S.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.18"/>
+      <geometry>
+        <mesh filename="A1_S.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ARM1 -->
+  <joint name="joint_1" type="revolute">
+    <parent link="shoulder"/>
+    <child link="arm1"/>
+    <origin xyz="0 0 0.06"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.5708" upper="1.5708" effort="10" velocity="1"/>
+  </joint>
+  <link name="arm1">
+    <inertial>
+      <origin xyz="0 0 0.23" rpy="0 0 0"/>
+      <mass value="2.5"/>
+      <inertia ixx="0.015" iyy="0.015" izz="0.015" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.23"/>
+      <geometry>
+        <mesh filename="A2_S.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.23"/>
+      <geometry>
+        <mesh filename="A2_S.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ARM2 -->
+  <joint name="joint_2" type="revolute">
+    <parent link="arm1"/>
+    <child link="arm2"/>
+    <origin xyz="0 0 0.17"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.5708" upper="1.5708" effort="10" velocity="1"/>
+  </joint>
+  <link name="arm2">
+    <inertial>
+      <origin xyz="0 0 0.35" rpy="0 0 0"/>
+      <mass value="2.5"/>
+      <inertia ixx="0.015" iyy="0.015" izz="0.015" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 -0.39"/>
+      <geometry>
+        <mesh filename="A3_S.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.35"/>
+      <geometry>
+        <mesh filename="A3_S.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ELBOW -->
+  <joint name="joint_3" type="revolute">
+    <parent link="arm2"/>
+    <child link="elbow"/>
+    <origin xyz="-0.015 0 0.86"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.5708" upper="1.5708" effort="10" velocity="1"/>
+  </joint>
+  <link name="elbow">
+    <inertial>
+      <origin xyz="0 0 0.15" rpy="0 0 0"/>
+      <mass value="2"/>
+      <inertia ixx="0.01" iyy="0.01" izz="0.01" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.015 0 -1.25"/>
+      <geometry>
+        <mesh filename="A4_S.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.15"/>
+      <geometry>
+        <mesh filename="A4_S.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ARM3 + GRIPPER_INNER -->
+  <joint name="joint_4" type="revolute">
+    <parent link="elbow"/>
+    <child link="arm3"/>
+    <origin xyz="0 0 -0.7"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.5708" upper="1.5708" effort="10" velocity="1"/>
+  </joint>
+  <link name="arm3">
+    <inertial>
+      <origin xyz="0 0 0.25" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.005" iyy="0.005" izz="0.005" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.015 0 -0.55"/>
+      <geometry>
+        <mesh filename="A5_S.stl"/>
+      </geometry>
+    </visual>
+    <visual>
+      <origin xyz="0.015 0 -0.55"/>
+      <geometry>
+        <mesh filename="GRIPPER_INNER_S.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.25"/>
+      <geometry>
+        <mesh filename="A5_S.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  
+   <link name="gripper_inner_site">
+    <visual>
+      <origin xyz="0 0.0058 0.12"/>
+      <geometry>
+        <box size="0.03 0.001 0.05"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="gripper_inner_site_joint" type="fixed">
+    <parent link="arm3"/>
+    <child link="gripper_inner_site"/>
+    <origin xyz="0 0.0058 0.12" rpy="0 0 0"/>
+  </joint>
+
+  <!-- GRIPPER UPPER -->
+  <joint name="joint_5" type="revolute">
+    <parent link="arm3"/>
+    <child link="gripper"/>
+    <origin xyz="0 0 0.09"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.2618" upper="1.5708" effort="10" velocity="1"/>
+  </joint>
+  <link name="gripper">
+    <inertial>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <mass value="0.3"/>
+      <inertia ixx="0.001" iyy="0.001" izz="0.001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0.015 0 -0.64"/>
+      <geometry>
+        <mesh filename="GRIPPER_UPPER_S.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.1"/>
+      <geometry>
+        <mesh filename="GRIPPER_UPPER_S.stl"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <link name="gripper_upper_site">
+    <visual>
+      <origin xyz="0 -0.0058 0.075"/>
+      <geometry>
+        <box size="0.03 0.002 0.05"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="gripper_upper_site_joint" type="fixed">
+    <parent link="gripper"/>
+    <child link="gripper_upper_site"/>
+    <origin xyz="0 -0.0058 0.075" rpy="0 0 0"/>
+  </joint>
+
+</robot>
