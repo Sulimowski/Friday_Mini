@@ -10,15 +10,13 @@
 git clone https://github.com/Sulimowski/Friday_Mini.git
 
 
-```markdown
-# 📥 Скачать проект
-
-[**⬇️ Скачать FRIDAY_SIM (ZIP)**](https://github.com/Sulimowski/Friday_Mini/archive/refs/heads/master.zip)
 
 
----
 
-# **🧨 DEAD LINE **
+
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%2336BCF7&lines=DEAD+suka+LINE)](https://git.io/typing-svg)
+
+
 - Кинематика в в PyBullet  6.04
 - 3д карта реальныз обьектов 6.04
 
