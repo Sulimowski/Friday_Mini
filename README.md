@@ -1,3 +1,6 @@
+> Добро пожаловать в проект **FRIDAY_SIM** — симуляция архитектуры робота, сделанная с душой 🤖
+
+---
 
 ## 🧬 Клонировать репозиторий
 
@@ -5,9 +8,19 @@
 
 ```bash
 git clone https://github.com/Sulimowski/Friday_Mini.git
+📥 Скачать проект
 
+🧨 DEAD LINE
+Проект по архитектуре робота
 
+Симуляция в PyBullet
 
-[**⬇️ Скачать FRIDAY_SIM (ZIP)**](https://github.com/Sulimowski/Friday_Mini/archive/refs/heads/master.zip)
+STL и URDF файлы включены
 
+Основной код в main.py
 
+CSV-данные и сцена .ply
+
+Приватный репозиторий, доступ только для приглашённых
+
+Можно клонировать или скачать .zip
