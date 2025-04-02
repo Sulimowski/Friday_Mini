@@ -271,8 +271,8 @@
 # p.setGravity(0, 0, -9.81)
 # p.loadURDF("plane.urdf")
 #
-# robot_id = p.loadURDF("C:\\Users\\2005s\\Desktop\\BULLET_FRIDAY\\BULLET_FRIDAY.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION)
-# grid_id = p.loadURDF("C:\\Users\\2005s\\Desktop\\BULLET_FRIDAY\\BULLET_FRIDAY_with_grid.urdf", useFixedBase=True)
+# robot_id = p.loadURDF("C:\\Users\\2005s\\PycharmProjects\\FRIDAY_SIM\\BULLET_FRIDAY\\BULLET_FRIDAY.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION)
+# grid_id = p.loadURDF("C:\\Users\\2005s\\PycharmProjects\\FRIDAY_SIM\\BULLET_FRIDAY\\BULLET_FRIDAY_with_grid.urdf", useFixedBase=True)
 #
 # link_name_to_index = {p.getBodyInfo(robot_id)[0].decode('utf-8'): -1}
 # for i in range(p.getNumJoints(robot_id)):
@@ -424,171 +424,168 @@
 #         else:
 #             print("❓ Неизвестная команда.")
 
-
-import pybullet as p
-import time
-import pybullet_data
-import pandas as pd
-import numpy as np
-from scipy.optimize import minimize
-
-# === Настройки ===
-CSV_PATH = "points.csv"
-TARGET_NAME = "diag_0.3_0.2_0.1"
-CUBE_HALF = 0.03
-SLEEP_TIME = 1 / 240
-FORCE = 80
-
-# === PyBullet Init ===
-p.connect(p.GUI)
-p.setAdditionalSearchPath(pybullet_data.getDataPath())
-p.setGravity(0, 0, -9.81)
-p.loadURDF("plane.urdf")
-
-robot_id = p.loadURDF("C:\\Users\\2005s\\PycharmProjects\\FRIDAY_SIM\\BULLET_FRIDAY\\BULLET_FRIDAY.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION)
-grid_id = p.loadURDF("C:\\Users\\2005s\\PycharmProjects\\FRIDAY_SIM\\BULLET_FRIDAY\\BULLET_FRIDAY_with_grid.urdf", useFixedBase=True)
-
-# === Индексы звеньев ===
-link_name_to_index = {p.getBodyInfo(robot_id)[0].decode('utf-8'): -1}
-for i in range(p.getNumJoints(robot_id)):
-    name = p.getJointInfo(robot_id, i)[12].decode('utf-8')
-    link_name_to_index[name] = i
-gripper_inner_index = link_name_to_index["gripper_inner_site"]
-
-# === Цель и куб ===
-target_df = pd.read_csv(CSV_PATH)
-target_xyz = target_df[target_df['name'] == TARGET_NAME][['x', 'y', 'z']].values[0]
-
-cube_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[CUBE_HALF]*3, rgbaColor=[0, 1, 0, 1])
-cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[CUBE_HALF]*3)
-cube_id = p.createMultiBody(0, cube_collision, cube_visual, basePosition=target_xyz)
-
-# === Ограничения суставов ===
-JOINT_LIMITS = {i: (-np.pi, np.pi) for i in range(p.getNumJoints(robot_id)) if p.getJointInfo(robot_id, i)[2] == p.JOINT_REVOLUTE}
-
-# === Утилиты ===
-def get_site_position(site_index):
-    return np.array(p.getLinkState(robot_id, site_index)[0])
-
-def reset_joint_angles(joint_angles):
-    for i, angle in enumerate(joint_angles):
-        p.resetJointState(robot_id, i, angle)
-    for _ in range(5):
-        p.stepSimulation()
-
-# === Целевая функция
-def objective_phase1(joint_angles, target_pos):
-    reset_joint_angles(joint_angles)
-    for _ in range(3):
-        p.stepSimulation()
-
-    pos_inner = get_site_position(gripper_inner_index)
-    error = np.linalg.norm(pos_inner - target_pos)
-
-    p.addUserDebugLine(pos_inner, target_pos, [0, 1, 0], lineWidth=2, lifeTime=1)
-    p.addUserDebugText(f"{error:.3f}", pos_inner + [0, 0, 0.02], textColorRGB=[1, 0, 0], lifeTime=1)
-
-    # === Контакт обязателен
-    # contacts = p.getContactPoints(bodyA=robot_id, bodyB=cube_id)
-    # touching = any(c[3] == gripper_inner_index or c[4] == gripper_inner_index for c in contacts)
-    #
-    # if not touching:
-    #     return 1e6  # ❌ если не дотронулся — отбраковка
-
-    return error
-
-
-# === Оптимизация
-def evaluate_grasp_pybullet(target_pos, max_attempts=5):
-    joint_indices = list(JOINT_LIMITS.keys())
-    best_qpos = None
-    best_error = float('inf')
-
-    for attempt in range(max_attempts):
-        print(f"⚙️ Попытка {attempt + 1}")
-
-        reset_joint_angles([0.0] * len(joint_indices))
-        for _ in range(3):
-            p.stepSimulation()
-
-        base_guess = np.array([0.0] * len(joint_indices))
-        noise = np.random.uniform(-0.1, 0.1, size=len(joint_indices))
-        initial_guess = np.clip(base_guess + noise,
-                                [JOINT_LIMITS[i][0] for i in joint_indices],
-                                [JOINT_LIMITS[i][1] for i in joint_indices])
-
-        result = minimize(
-            objective_phase1,
-            initial_guess,
-            args=(target_pos,),  # 👈 БЕЗ поднятия по Z
-            bounds=[JOINT_LIMITS[i] for i in joint_indices],
-            method='Powell',
-            options={'maxiter': 20}  # ограничим длительность
-        )
-
-        if result.success:
-            error = objective_phase1(result.x, target_pos)
-            print(f"  📏 Ошибка: {error:.4f}")
-            if error < best_error:
-                best_error = error
-                best_qpos = result.x
-
-    if best_qpos is None:
-        return None
-
-    return best_qpos.tolist()
-
-
-# === Воспроизведение
-def interpolate_trajectory(start_q, end_q, steps):
-    return [(1 - alpha) * np.array(start_q) + alpha * np.array(end_q) for alpha in np.linspace(0, 1, steps)]
-
-def play_trajectory(trajectory, joint_indices, sleep=SLEEP_TIME):
-    for q in trajectory:
-        for j, idx in enumerate(joint_indices):
-            p.setJointMotorControl2(robot_id, idx, p.POSITION_CONTROL, targetPosition=q[j], force=FORCE)
-        p.stepSimulation()
-        time.sleep(sleep)
-
-def grasp_command(target=None, steps=200):
-    if target is None:
-        target = target_xyz
-
-    print("🚀 Поиск оптимальной траектории...")
-    qpos = evaluate_grasp_pybullet(target)
-
-    if qpos is None:
-        print("❌ Не удалось найти траекторию.")
-        return
-
-    joint_indices = list(JOINT_LIMITS.keys())
-    reset_joint_angles([0.0] * len(joint_indices))
-    for _ in range(5):
-        p.stepSimulation()
-
-    print("🎯 Выполнение траектории...")
-    traj = interpolate_trajectory([0.0]*len(qpos), qpos, steps)
-    play_trajectory(traj, joint_indices)
-
-def take():
-    print("🤏 Захват объекта...")
-    grasp_command()
-
-# === CLI ===
-if __name__ == "__main__":
-    while True:
-        cmd = input("Введите команду (grab / take / exit): ").strip().lower()
-        if cmd == "grab":
-            grasp_command()
-        elif cmd == "take":
-            take()
-        elif cmd == "exit":
-            break
-        else:
-            print("❓ Неизвестная команда.")
-
-
-#---------------------------Generate The Matrix
+# import pybullet as p
+# import time
+# import pybullet_data
+# import pandas as pd
+# import numpy as np
+# from scipy.optimize import minimize
+#
+# # === Настройки ===
+# CSV_PATH = "points.csv"
+# TARGET_NAME = "diag_0.3_0.2_0.1"
+# CUBE_HALF = 0.03
+# SLEEP_TIME = 1 / 240
+# FORCE = 80
+#
+# # === PyBullet Init ===
+# p.connect(p.GUI)
+# p.setAdditionalSearchPath(pybullet_data.getDataPath())
+# p.setGravity(0, 0, -9.81)
+# p.loadURDF("plane.urdf")
+#
+# robot_id = p.loadURDF("C:\\Users\\2005s\\PycharmProjects\\FRIDAY_SIM\\BULLET_FRIDAY\\BULLET_FRIDAY.urdf", useFixedBase=True, flags=p.URDF_USE_SELF_COLLISION)
+# grid_id = p.loadURDF("C:\\Users\\2005s\\PycharmProjects\\FRIDAY_SIM\\BULLET_FRIDAY\\BULLET_FRIDAY_with_grid.urdf", useFixedBase=True)
+#
+# # === Индексы звеньев ===
+# link_name_to_index = {p.getBodyInfo(robot_id)[0].decode('utf-8'): -1}
+# for i in range(p.getNumJoints(robot_id)):
+#     name = p.getJointInfo(robot_id, i)[12].decode('utf-8')
+#     link_name_to_index[name] = i
+# gripper_inner_index = link_name_to_index["gripper_inner_site"]
+#
+# # === Цель и куб ===
+# target_df = pd.read_csv(CSV_PATH)
+# target_xyz = target_df[target_df['name'] == TARGET_NAME][['x', 'y', 'z']].values[0]
+#
+# cube_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[CUBE_HALF]*3, rgbaColor=[0, 1, 0, 1])
+# cube_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[CUBE_HALF]*3)
+# cube_id = p.createMultiBody(0, cube_collision, cube_visual, basePosition=target_xyz)
+#
+# # === Ограничения суставов ===
+# JOINT_LIMITS = {i: (-np.pi, np.pi) for i in range(p.getNumJoints(robot_id)) if p.getJointInfo(robot_id, i)[2] == p.JOINT_REVOLUTE}
+#
+# # === Утилиты ===
+# def get_site_position(site_index):
+#     return np.array(p.getLinkState(robot_id, site_index)[0])
+#
+# def reset_joint_angles(joint_angles):
+#     for i, angle in enumerate(joint_angles):
+#         p.resetJointState(robot_id, i, angle)
+#     for _ in range(5):
+#         p.stepSimulation()
+#
+# # === Целевая функция
+# def objective_phase1(joint_angles, target_pos):
+#     reset_joint_angles(joint_angles)
+#     for _ in range(3):
+#         p.stepSimulation()
+#
+#     pos_inner = get_site_position(gripper_inner_index)
+#     error = np.linalg.norm(pos_inner - target_pos)
+#
+#     p.addUserDebugLine(pos_inner, target_pos, [0, 1, 0], lineWidth=2, lifeTime=1)
+#     p.addUserDebugText(f"{error:.3f}", pos_inner + [0, 0, 0.02], textColorRGB=[1, 0, 0], lifeTime=1)
+#
+#     # === Контакт обязателен
+#     # contacts = p.getContactPoints(bodyA=robot_id, bodyB=cube_id)
+#     # touching = any(c[3] == gripper_inner_index or c[4] == gripper_inner_index for c in contacts)
+#     #
+#     # if not touching:
+#     #     return 1e6  # ❌ если не дотронулся — отбраковка
+#
+#     return error
+#
+#
+# # === Оптимизация
+# def evaluate_grasp_pybullet(target_pos, max_attempts=5):
+#     joint_indices = list(JOINT_LIMITS.keys())
+#     best_qpos = None
+#     best_error = float('inf')
+#
+#     for attempt in range(max_attempts):
+#         print(f"⚙️ Попытка {attempt + 1}")
+#
+#         reset_joint_angles([0.0] * len(joint_indices))
+#         for _ in range(3):
+#             p.stepSimulation()
+#
+#         base_guess = np.array([0.0] * len(joint_indices))
+#         noise = np.random.uniform(-0.1, 0.1, size=len(joint_indices))
+#         initial_guess = np.clip(base_guess + noise,
+#                                 [JOINT_LIMITS[i][0] for i in joint_indices],
+#                                 [JOINT_LIMITS[i][1] for i in joint_indices])
+#
+#         result = minimize(
+#             objective_phase1,
+#             initial_guess,
+#             args=(target_pos,),  # 👈 БЕЗ поднятия по Z
+#             bounds=[JOINT_LIMITS[i] for i in joint_indices],
+#             method='Powell',
+#             options={'maxiter': 20}  # ограничим длительность
+#         )
+#
+#         if result.success:
+#             error = objective_phase1(result.x, target_pos)
+#             print(f"  📏 Ошибка: {error:.4f}")
+#             if error < best_error:
+#                 best_error = error
+#                 best_qpos = result.x
+#
+#     if best_qpos is None:
+#         return None
+#
+#     return best_qpos.tolist()
+#
+#
+# # === Воспроизведение
+# def interpolate_trajectory(start_q, end_q, steps):
+#     return [(1 - alpha) * np.array(start_q) + alpha * np.array(end_q) for alpha in np.linspace(0, 1, steps)]
+#
+# def play_trajectory(trajectory, joint_indices, sleep=SLEEP_TIME):
+#     for q in trajectory:
+#         for j, idx in enumerate(joint_indices):
+#             p.setJointMotorControl2(robot_id, idx, p.POSITION_CONTROL, targetPosition=q[j], force=FORCE)
+#         p.stepSimulation()
+#         time.sleep(sleep)
+#
+# def grasp_command(target=None, steps=200):
+#     if target is None:
+#         target = target_xyz
+#
+#     print("🚀 Поиск оптимальной траектории...")
+#     qpos = evaluate_grasp_pybullet(target)
+#
+#     if qpos is None:
+#         print("❌ Не удалось найти траекторию.")
+#         return
+#
+#     joint_indices = list(JOINT_LIMITS.keys())
+#     reset_joint_angles([0.0] * len(joint_indices))
+#     for _ in range(5):
+#         p.stepSimulation()
+#
+#     print("🎯 Выполнение траектории...")
+#     traj = interpolate_trajectory([0.0]*len(qpos), qpos, steps)
+#     play_trajectory(traj, joint_indices)
+#
+# def take():
+#     print("🤏 Захват объекта...")
+#     grasp_command()
+#
+# # === CLI ===
+# if __name__ == "__main__":
+#     while True:
+#         cmd = input("Введите команду (grab / take / exit): ").strip().lower()
+#         if cmd == "grab":
+#             grasp_command()
+#         elif cmd == "take":
+#             take()
+#         elif cmd == "exit":
+#             break
+#         else:
+#             print("❓ Неизвестная команда.")
+#--------------------------Generate The Matrix
 # import os
 #
 # robot_arm_urdf_path = "C:\\Users\\2005s\\Desktop\\BULLET_FRIDAY\\BULLET_FRIDAY.urdf"  # Путь к исходному URDF руки
@@ -735,7 +732,6 @@ if __name__ == "__main__":
 # print(f"✅ CSV с координатами точек сохранён: {csv_path}")
 #
 #-----------------------------------STEREO 3D MAP
-
 #!/usr/bin/env python3
 #
 # import depthai as dai
@@ -851,7 +847,7 @@ if __name__ == "__main__":
 #         vis.poll_events()
 #         vis.update_renderer()
 #     vis.destroy_window()
-#
+
 # -------------------------------------------------------------PHOTO 3D
 #
 # import cv2
@@ -953,3 +949,459 @@ if __name__ == "__main__":
 #             break
 #
 #     cv2.destroyAllWindows()
+
+# import depthai as dai
+# import numpy as np
+# import cv2
+# from ultralytics import YOLO
+# import time
+#
+# # === Загрузка YOLO модели ===
+# model = YOLO("C:/Users/2005s/PycharmProjects/FRIDAY_SIM/yolo11s.pt")
+#
+# TARGET_CLASS = "cup"
+# CONFIDENCE_THRESHOLD = 0.5
+# FPS = 30
+#
+# class FPSCounter:
+#     def __init__(self):
+#         self.frameCount = 0
+#         self.fps = 0
+#         self.startTime = time.time()
+#
+#     def tick(self):
+#         self.frameCount += 1
+#         if self.frameCount % 10 == 0:
+#             elapsedTime = time.time() - self.startTime
+#             self.fps = self.frameCount / elapsedTime
+#             self.frameCount = 0
+#             self.startTime = time.time()
+#         return self.fps
+#
+# # === Pipeline ===
+# pipeline = dai.Pipeline()
+# camRgb = pipeline.create(dai.node.ColorCamera)
+# monoLeft = pipeline.create(dai.node.MonoCamera)
+# monoRight = pipeline.create(dai.node.MonoCamera)
+# depth = pipeline.create(dai.node.StereoDepth)
+# sync = pipeline.create(dai.node.Sync)
+# xOut = pipeline.create(dai.node.XLinkOut)
+# xOut.setStreamName("out")
+# xOut.input.setBlocking(False)
+#
+# camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
+# camRgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
+# camRgb.setIspScale(1, 3)
+# camRgb.setFps(FPS)
+#
+# monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+# monoLeft.setCamera("left")
+# monoLeft.setFps(FPS)
+# monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+# monoRight.setCamera("right")
+# monoRight.setFps(FPS)
+#
+# depth.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.DEFAULT)
+# depth.initialConfig.setMedianFilter(dai.MedianFilter.MEDIAN_OFF)
+# depth.setLeftRightCheck(True)
+# depth.setExtendedDisparity(True)
+# depth.setSubpixel(True)
+# depth.setDepthAlign(dai.CameraBoardSocket.CAM_A)
+#
+# monoLeft.out.link(depth.left)
+# monoRight.out.link(depth.right)
+# camRgb.isp.link(sync.inputs["rgb"])
+# depth.depth.link(sync.inputs["depth"])
+# sync.out.link(xOut.input)
+#
+# def draw_dashed_line(img, pt1, pt2, color, thickness=1, dash_length=5):
+#     dist = int(np.linalg.norm(np.array(pt1) - np.array(pt2)))
+#     for i in range(0, dist, dash_length * 2):
+#         start = (
+#             int(pt1[0] + (pt2[0] - pt1[0]) * i / dist),
+#             int(pt1[1] + (pt2[1] - pt1[1]) * i / dist)
+#         )
+#         end = (
+#             int(pt1[0] + (pt2[0] - pt1[0]) * (i + dash_length) / dist),
+#             int(pt1[1] + (pt2[1] - pt1[1]) * (i + dash_length) / dist)
+#         )
+#         cv2.line(img, start, end, color, thickness)
+#
+# def draw_dashed_rect(img, pt1, pt2, color, thickness=1):
+#     x1, y1 = pt1
+#     x2, y2 = pt2
+#     draw_dashed_line(img, (x1, y1), (x2, y1), color, thickness)
+#     draw_dashed_line(img, (x2, y1), (x2, y2), color, thickness)
+#     draw_dashed_line(img, (x2, y2), (x1, y2), color, thickness)
+#     draw_dashed_line(img, (x1, y2), (x1, y1), color, thickness)
+#
+# def draw_3d_box(image, x1, y1, x2, y2, depth_px=10, color=(0,255,0), thickness=2):
+#     # Задняя «глубокая» часть бокса
+#     offset = depth_px
+#     x1_b, y1_b = x1 - offset, y1 - offset
+#     x2_b, y2_b = x2 - offset, y2 - offset
+#
+#     # x1_b, y1_b = x1, y1 - depth_px
+#     # x2_b, y2_b = x2, y2 - depth_px
+#
+#     # Передний прямоугольник
+#     cv2.rectangle(image, (x1, y1), (x2, y2), color, thickness)
+#
+#     # Задний прямоугольник
+#     draw_dashed_rect(image, (x1_b, y1_b), (x2_b, y2_b), color, thickness)
+#
+#     # Соединительные линии — пунктир
+#     draw_dashed_line(image, (x1, y1), (x1_b, y1_b), color, thickness)
+#     draw_dashed_line(image, (x2, y1), (x2_b, y1_b), color, thickness)
+#     draw_dashed_line(image, (x1, y2), (x1_b, y2_b), color, thickness)
+#     draw_dashed_line(image, (x2, y2), (x2_b, y2_b), color, thickness)
+#
+# # === Основной код ===
+# with dai.Device(pipeline) as device:
+#     q = device.getOutputQueue(name="out", maxSize=4, blocking=False)
+#     fpsCounter = FPSCounter()
+#
+#     while True:
+#         inMessage = q.get()
+#         inColor = inMessage["rgb"]
+#         inDepth = inMessage["depth"]
+#
+#         frame = inColor.getCvFrame()
+#         depthFrame = inDepth.getFrame()  # depth в миллиметрах
+#
+#         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#         fps = fpsCounter.tick()
+#
+#         # YOLOv8
+#         results = model.predict(rgb, verbose=False)[0]
+#         cups = [b for b in results.boxes if model.names[int(b.cls[0])] == TARGET_CLASS and b.conf[0] > CONFIDENCE_THRESHOLD]
+#
+#         for b in cups:
+#             x1, y1, x2, y2 = map(int, b.xyxy[0])
+#             draw_3d_box(frame, x1, y1, x2, y2, depth_px=30, color=(0,255,0), thickness=2)
+#
+#
+#             # Безопасные границы
+#             h, w = depthFrame.shape
+#             x1 = max(0, min(x1, w-1))
+#             x2 = max(0, min(x2, w-1))
+#             y1 = max(0, min(y1, h-1))
+#             y2 = max(0, min(y2, h-1))
+#
+#             roi = depthFrame[y1:y2, x1:x2]
+#             if roi.size > 0:
+#                 depth_mm = np.median(roi)
+#                 depth_m = depth_mm / 1000.0
+#                 cv2.putText(frame, f"Depth: {depth_m:.2f}m", (x1, y1 - 10),
+#                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+#
+#         cv2.putText(frame, f"FPS: {fps:.2f}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+#         cv2.imshow("RGB + Depth", frame)
+#
+#         if cv2.waitKey(1) == ord('q'):
+#             break
+#
+#     cv2.destroyAllWindows()
+
+#------------------------Point cloud with detection and reconstuction of object
+import sys
+import cv2
+import depthai as dai
+import numpy as np
+import open3d as o3d
+from ultralytics import YOLO
+from sklearn.decomposition import PCA
+
+
+yolo = YOLO("C:\\Users\\2005s\\PycharmProjects\\FRIDAY_SIM\\yolo11s.pt")
+OBJECT_NAME = "cup"
+FPS = 30
+
+# Получение ID объекта по его названию
+object_id = next((k for k, v in yolo.names.items() if v == OBJECT_NAME), -1)
+if object_id == -1:
+    sys.exit(f"Object '{OBJECT_NAME}' not found in YOLO model classes.")
+
+
+if object_id == -1:
+    sys.exit(f"Object '{OBJECT_NAME}' not found in YOLO model classes.")
+
+pipeline = dai.Pipeline()
+camRgb = pipeline.create(dai.node.ColorCamera)
+monoLeft = pipeline.create(dai.node.MonoCamera)
+monoRight = pipeline.create(dai.node.MonoCamera)
+depth = pipeline.create(dai.node.StereoDepth)
+pointcloud = pipeline.create(dai.node.PointCloud)
+sync = pipeline.create(dai.node.Sync)
+xOut = pipeline.create(dai.node.XLinkOut)
+xOut.input.setBlocking(False)
+
+# Конфигурация камеры для близкой дистанции
+camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
+camRgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
+camRgb.setIspScale(1, 3)
+camRgb.setFps(FPS)
+
+monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+monoLeft.setBoardSocket(dai.CameraBoardSocket.CAM_B)
+monoLeft.setFps(FPS)
+monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+monoRight.setBoardSocket(dai.CameraBoardSocket.CAM_C)
+monoRight.setFps(FPS)
+
+# Глубина для близкой дистанции
+depth.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.DEFAULT)
+depth.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_7x7)
+depth.setLeftRightCheck(True)
+depth.setExtendedDisparity(True)
+depth.setSubpixel(True)
+depth.setDepthAlign(dai.CameraBoardSocket.CAM_A)
+
+monoLeft.out.link(depth.left)
+monoRight.out.link(depth.right)
+depth.depth.link(pointcloud.inputDepth)
+camRgb.isp.link(sync.inputs["rgb"])
+pointcloud.outputPointCloud.link(sync.inputs["pcl"])
+sync.out.link(xOut.input)
+xOut.setStreamName("out")
+
+with dai.Device(pipeline) as device:
+    q = device.getOutputQueue(name="out", maxSize=4, blocking=False)
+    vis = o3d.visualization.Visualizer()
+    vis.create_window()
+    pcd = o3d.geometry.PointCloud()
+
+    first = True
+
+    while True:
+        msg = q.get()
+        inColor = msg["rgb"]
+        inPointCloud = msg["pcl"]
+
+        cvColorFrame = inColor.getCvFrame()
+        rgb_frame = cv2.cvtColor(cvColorFrame, cv2.COLOR_BGR2RGB)
+
+        # YOLO Detection
+        results = yolo(rgb_frame, verbose=False)[0]
+
+        detected = False
+        bbox = None
+        for box in results.boxes:
+            if int(box.cls.item()) == object_id:
+                bbox = box.xyxy[0].int().tolist()
+                detected = True
+                break  # берём первый найденный объект
+
+        points = inPointCloud.getPoints().astype(np.float64) * 1000  # мм
+
+        # Исправляем переворот по Y
+        points[:, 1] = -points[:, 1]
+
+        h, w = rgb_frame.shape[:2]
+        colors = rgb_frame.reshape(-1, 3) / 255.0
+        if colors.shape[0] != points.shape[0]:
+            colors = np.tile([0.5, 0.5, 0.5], (points.shape[0], 1))
+
+
+        if detected and bbox:
+            x1, y1, x2, y2 = bbox
+            mask = np.zeros((h, w), dtype=bool)
+            mask[y1:y2, x1:x2] = True
+            mask = mask.flatten()
+
+            colors[mask] = [0, 1, 0]
+
+            obj_points = points[mask]
+
+            if len(obj_points) > 3:
+                pca = PCA(n_components=3)
+                pca.fit(obj_points)
+
+                main_axis = pca.components_[0]
+                proj = np.dot(obj_points, main_axis)
+                center_plane = np.mean(proj)
+
+                # Проверяем, где больше точек, впереди или сзади плоскости отражения:
+                forward_mask = proj > center_plane
+                backward_mask = proj <= center_plane
+
+                # Если впереди точек больше, разворачиваем ось зеркалирования
+                if np.sum(forward_mask) > np.sum(backward_mask):
+                    main_axis = -main_axis
+                    proj = -proj
+                    center_plane = -center_plane
+
+                # Теперь зеркалим только те точки, которые сзади (чтобы получить только недостающую половину)
+                points_to_mirror = obj_points[backward_mask]
+                proj_to_mirror = proj[backward_mask]
+
+                mirrored_points = points_to_mirror - 2 * np.outer((proj_to_mirror - center_plane), main_axis)
+
+                # Добавляем зеркальные точки к сцене
+                points = np.vstack([points, mirrored_points])
+                colors = np.vstack([colors, np.tile([0, 1, 0], (mirrored_points.shape[0], 1))])
+
+        pcd.points = o3d.utility.Vector3dVector(points)
+        pcd.colors = o3d.utility.Vector3dVector(colors)
+
+        if first:
+            vis.add_geometry(pcd)
+            view_ctl = vis.get_view_control()
+            view_ctl.set_up([0, -1, 0])
+            view_ctl.set_front([0, 0, -1])
+            view_ctl.set_lookat([0, 0, 1000])
+            view_ctl.set_zoom(0.35)
+            first = False
+        else:
+            vis.update_geometry(pcd)
+
+        vis.poll_events()
+        vis.update_renderer()
+
+        # Отображение результата YOLO
+        cv2.rectangle(cvColorFrame, (x1, y1), (x2, y2), (0, 255, 0), 2) if detected else None
+        cv2.imshow("Detection", cvColorFrame)
+        if cv2.waitKey(1) == ord('q'):
+            break
+
+    vis.destroy_window()
+    cv2.destroyAllWindows()
+
+#-------------------try to build in the simulation----ne rabotaet
+# import pybullet as p
+# import pybullet_data
+# import numpy as np
+# import cv2
+# import depthai as dai
+# from ultralytics import YOLO
+# from sklearn.decomposition import PCA
+#
+# # YOLO
+# OBJECT_NAME = "cup"
+# yolo = YOLO("C:\\Users\\2005s\\PycharmProjects\\FRIDAY_SIM\\yolo11s.pt")
+# object_id = next((k for k, v in yolo.names.items() if v == OBJECT_NAME), -1)
+#
+# pipeline = dai.Pipeline()
+# camRgb = pipeline.create(dai.node.ColorCamera)
+# monoLeft = pipeline.create(dai.node.MonoCamera)
+# monoRight = pipeline.create(dai.node.MonoCamera)
+# depth = pipeline.create(dai.node.StereoDepth)
+# pointcloud = pipeline.create(dai.node.PointCloud)
+# sync = pipeline.create(dai.node.Sync)
+# xOut = pipeline.create(dai.node.XLinkOut)
+# xOut.input.setBlocking(False)
+#
+# camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_1080_P)
+# camRgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
+# camRgb.setIspScale(1, 3)
+# camRgb.setFps(30)
+#
+# monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+# monoLeft.setBoardSocket(dai.CameraBoardSocket.CAM_B)
+# monoLeft.setFps(30)
+# monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+# monoRight.setBoardSocket(dai.CameraBoardSocket.CAM_C)
+# monoRight.setFps(30)
+#
+# depth.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.DEFAULT)
+# depth.initialConfig.setMedianFilter(dai.MedianFilter.KERNEL_7x7)
+# depth.setLeftRightCheck(True)
+# depth.setExtendedDisparity(True)
+# depth.setSubpixel(True)
+# depth.setDepthAlign(dai.CameraBoardSocket.CAM_A)
+#
+# monoLeft.out.link(depth.left)
+# monoRight.out.link(depth.right)
+# depth.depth.link(pointcloud.inputDepth)
+# camRgb.isp.link(sync.inputs["rgb"])
+# pointcloud.outputPointCloud.link(sync.inputs["pcl"])
+# sync.out.link(xOut.input)
+# xOut.setStreamName("out")
+#
+# # PyBullet
+# physicsClient = p.connect(p.GUI)
+# p.setAdditionalSearchPath(pybullet_data.getDataPath())
+# p.setGravity(0, 0, -9.81)
+# p.loadURDF("plane.urdf")
+#
+# all_green_points = []
+#
+# with dai.Device(pipeline) as device:
+#     q = device.getOutputQueue(name="out", maxSize=4, blocking=False)
+#
+#     while True:
+#         msg = q.get()
+#         inColor = msg["rgb"]
+#         inPointCloud = msg["pcl"]
+#
+#         cvColorFrame = inColor.getCvFrame()
+#         rgb_frame = cv2.cvtColor(cvColorFrame, cv2.COLOR_BGR2RGB)
+#
+#         results = yolo(rgb_frame, verbose=False)[0]
+#
+#         detected = False
+#         bbox = None
+#         for box in results.boxes:
+#             if int(box.cls.item()) == object_id:
+#                 bbox = box.xyxy[0].int().tolist()
+#                 detected = True
+#                 break
+#
+#         points = inPointCloud.getPoints().astype(np.float64) * 1000
+#         points[:, 1] = -points[:, 1]
+#
+#         h, w = rgb_frame.shape[:2]
+#
+#         if detected and bbox:
+#             x1, y1, x2, y2 = bbox
+#             mask = np.zeros((h, w), dtype=bool)
+#             mask[y1:y2, x1:x2] = True
+#             mask = mask.flatten()
+#
+#             obj_points = points[mask]
+#
+#             if len(obj_points) > 3:
+#                 pca = PCA(n_components=3)
+#                 pca.fit(obj_points)
+#
+#                 main_axis = pca.components_[0]
+#                 proj = np.dot(obj_points, main_axis)
+#                 center_plane = np.mean(proj)
+#
+#                 forward_mask = proj > center_plane
+#                 backward_mask = proj <= center_plane
+#
+#                 if np.sum(forward_mask) > np.sum(backward_mask):
+#                     main_axis = -main_axis
+#                     proj = -proj
+#                     center_plane = -center_plane
+#
+#                 points_to_mirror = obj_points[backward_mask]
+#                 proj_to_mirror = proj[backward_mask]
+#
+#                 mirrored_points = points_to_mirror - 2 * np.outer((proj_to_mirror - center_plane), main_axis)
+#
+#                 # Кубики примерно размера объектов на кадре (~3 см)
+#                 cube_size = 0.03
+#
+#                 # Запоминаем все зелёные точки
+#                 for point in mirrored_points:
+#                     point_meter = point / 1000.0
+#                     all_green_points.append(point_meter)
+#                     p.loadURDF("cube_small.urdf", basePosition=point_meter,
+#                                globalScaling=cube_size, useFixedBase=True)
+#
+#         # PyBullet simulation step
+#         p.stepSimulation()
+#
+#         # YOLO box
+#         if detected:
+#             cv2.rectangle(cvColorFrame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+#
+#         cv2.imshow("Detection", cvColorFrame)
+#
+#         if cv2.waitKey(1) == ord('q'):
+#             break
+#
+# cv2.destroyAllWindows()
+# p.disconnect()
