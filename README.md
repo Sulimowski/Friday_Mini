@@ -25,7 +25,7 @@ git clone https://github.com/Sulimowski/Friday_Mini.git
 # 🧨 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=8000FF&lines=DEAD+suka+LINE)](https://git.io/typing-svg)**
 
 **•** Кинематика в PyBullet — 6.04  
-**•** 3D-карта реальных объектов — 6.04  
+**•** 3D-карта реальных объектов — 6.04  70/100%
 **•** Построить мини версию — 15.04
 
 **•** Построить дом и выростить сына — 1№:!"№?5
