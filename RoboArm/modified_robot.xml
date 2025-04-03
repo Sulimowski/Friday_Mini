@@ -1,0 +1,2336 @@
+<?xml version="1.0" ?>
+<mujoco model="robot_arm">
+    <option timestep="0.002" gravity="0 0 -30" solver="Newton" impratio="100"/>
+
+    <visual>
+		<global offwidth="2560" offheight="1440" elevation="-20" azimuth="120" />
+		<map force="0.1" zfar="5000" shadowclip="0" znear="0.01" /> 
+		<rgba fog="1 1 1 1" haze="1 1 1 1"/>
+	</visual>
+
+
+
+    
+    <statistic center="0 0 1.5"/>
+
+    <asset>
+        <mesh name="base_mesh100" file="FR_MINI_SIM_BASE(100).stl"/>
+		
+		<mesh name="base_mesh010" file="FR_MINI_SIM_BASE(010).stl"/>
+		<mesh name="base_mesh000" file="FR_MINI_SIM_BASE(000).stl"/>
+		<mesh name="base_mesh350" file="FR_MINI_SIM_BASE(350).stl"/> 
+		<mesh name="base_mesh360" file="FR_MINI_SIM_BASE(360).stl"/> 
+        <mesh name="base_mesh1" file="FR_MINI_SIM_BASE(1).stl"/>
+		<mesh name="shoulder_mesh" file="FR_MINI_SIM_1A.stl"/>
+        <mesh name="elbow_mesh0" file="FR_MINI_SIM_2A(0).stl"/>
+		<mesh name="elbow_mesh1" file="FR_MINI_SIM_2A(1).stl"/>
+        <mesh name="arm1_mesh" file="FR_MINI_SIM_3A.stl"/>
+        <mesh name="arm2_mesh" file="FR_MINI_SIM_4A.stl"/>
+        <mesh name="arm30_mesh" file="FR_MINI_SIM_5A(00).stl"/> 
+		<mesh name="arm301_mesh" file="FR_MINI_SIM_5A(01).stl"/> 
+		<mesh name="arm31_mesh" file="FR_MINI_SIM_5A(1).stl"/>  
+        <mesh name="gripper_mesh" file="FR_MINI_SIM_GRIPPERA.stl"/>
+        <mesh name="cup_mesh" file="cup.stl"/>
+    </asset>
+
+    <worldbody>
+		<light name="front light" pos="0 0 1000" dir="0 0 -1" diffuse="1.2 1.2 1.2" specular="0.3 0.3 0.3" directional="true" castshadow="true" cutoff="45" exponent="2"/>
+
+        <geom name="floor" type="plane" size="1000 1000 0.05" rgba="0.5 0.5 0.5 1" condim="3" friction="1.2 1.2 1.2" contype="1" conaffinity="1"/>
+        <body name="GridCube" pos="0 0 408.75">
+         <geom name="GridCube" type="box" size="408.75 408.75 408.75" rgba="0 0 1 0.05"  contype="0" conaffinity="0"/>
+
+            
+           
+            
+
+            <!-- XY-плоскость (нижняя и верхняя) -->
+            <body name="matrix_xy_planes">
+                
+                    
+                        <site name="point_xy_-400_-400" pos="-400 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-400_-300" pos="-400 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-400_-200" pos="-400 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-400_-100" pos="-400 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-400_0" pos="-400 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-400_100" pos="-400 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-400_200" pos="-400 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-400_300" pos="-400 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-400_400" pos="-400 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xy_-300_-400" pos="-300 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-300_-300" pos="-300 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-300_-200" pos="-300 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-300_-100" pos="-300 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-300_0" pos="-300 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-300_100" pos="-300 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-300_200" pos="-300 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-300_300" pos="-300 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-300_400" pos="-300 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xy_-200_-400" pos="-200 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-200_-300" pos="-200 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-200_-200" pos="-200 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-200_-100" pos="-200 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-200_0" pos="-200 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-200_100" pos="-200 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-200_200" pos="-200 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-200_300" pos="-200 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-200_400" pos="-200 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xy_-100_-400" pos="-100 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-100_-300" pos="-100 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-100_-200" pos="-100 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-100_-100" pos="-100 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-100_0" pos="-100 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-100_100" pos="-100 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-100_200" pos="-100 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-100_300" pos="-100 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_-100_400" pos="-100 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xy_0_-400" pos="0 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_0_-300" pos="0 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_0_-200" pos="0 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_0_-100" pos="0 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_0_0" pos="0 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_0_100" pos="0 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_0_200" pos="0 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_0_300" pos="0 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_0_400" pos="0 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xy_100_-400" pos="100 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_100_-300" pos="100 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_100_-200" pos="100 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_100_-100" pos="100 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_100_0" pos="100 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_100_100" pos="100 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_100_200" pos="100 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_100_300" pos="100 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_100_400" pos="100 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xy_200_-400" pos="200 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_200_-300" pos="200 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_200_-200" pos="200 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_200_-100" pos="200 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_200_0" pos="200 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_200_100" pos="200 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_200_200" pos="200 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_200_300" pos="200 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_200_400" pos="200 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xy_300_-400" pos="300 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_300_-300" pos="300 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_300_-200" pos="300 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_300_-100" pos="300 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_300_0" pos="300 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_300_100" pos="300 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_300_200" pos="300 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_300_300" pos="300 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_300_400" pos="300 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xy_400_-400" pos="400 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_400_-300" pos="400 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_400_-200" pos="400 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_400_-100" pos="400 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_400_0" pos="400 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_400_100" pos="400 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_400_200" pos="400 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_400_300" pos="400 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xy_400_400" pos="400 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                
+            </body>
+
+            <!-- XZ-плоскость (передняя и задняя) -->
+            <body name="matrix_xz_planes">
+                
+                    
+                        <site name="point_xz_-400_-400" pos="-400 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-400_-300" pos="-400 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-400_-200" pos="-400 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-400_-100" pos="-400 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-400_0" pos="-400 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-400_100" pos="-400 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-400_200" pos="-400 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-400_300" pos="-400 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-400_400" pos="-400 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xz_-300_-400" pos="-300 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-300_-300" pos="-300 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-300_-200" pos="-300 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-300_-100" pos="-300 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-300_0" pos="-300 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-300_100" pos="-300 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-300_200" pos="-300 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-300_300" pos="-300 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-300_400" pos="-300 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xz_-200_-400" pos="-200 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-200_-300" pos="-200 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-200_-200" pos="-200 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-200_-100" pos="-200 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-200_0" pos="-200 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-200_100" pos="-200 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-200_200" pos="-200 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-200_300" pos="-200 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-200_400" pos="-200 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xz_-100_-400" pos="-100 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-100_-300" pos="-100 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-100_-200" pos="-100 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-100_-100" pos="-100 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-100_0" pos="-100 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-100_100" pos="-100 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-100_200" pos="-100 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-100_300" pos="-100 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_-100_400" pos="-100 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xz_0_-400" pos="0 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_0_-300" pos="0 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_0_-200" pos="0 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_0_-100" pos="0 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_0_0" pos="0 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_0_100" pos="0 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_0_200" pos="0 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_0_300" pos="0 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_0_400" pos="0 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xz_100_-400" pos="100 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_100_-300" pos="100 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_100_-200" pos="100 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_100_-100" pos="100 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_100_0" pos="100 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_100_100" pos="100 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_100_200" pos="100 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_100_300" pos="100 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_100_400" pos="100 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xz_200_-400" pos="200 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_200_-300" pos="200 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_200_-200" pos="200 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_200_-100" pos="200 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_200_0" pos="200 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_200_100" pos="200 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_200_200" pos="200 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_200_300" pos="200 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_200_400" pos="200 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xz_300_-400" pos="300 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_300_-300" pos="300 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_300_-200" pos="300 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_300_-100" pos="300 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_300_0" pos="300 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_300_100" pos="300 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_300_200" pos="300 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_300_300" pos="300 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_300_400" pos="300 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_xz_400_-400" pos="400 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_400_-300" pos="400 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_400_-200" pos="400 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_400_-100" pos="400 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_400_0" pos="400 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_400_100" pos="400 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_400_200" pos="400 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_400_300" pos="400 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_xz_400_400" pos="400 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+            </body>
+
+            <!-- YZ-плоскость (левая и правая) -->
+            <body name="matrix_yz_planes">
+                
+                    
+                        <site name="point_yz_-400_-400" pos="0 -400 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-400_-300" pos="0 -400 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-400_-200" pos="0 -400 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-400_-100" pos="0 -400 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-400_0" pos="0 -400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-400_100" pos="0 -400 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-400_200" pos="0 -400 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-400_300" pos="0 -400 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-400_400" pos="0 -400 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_yz_-300_-400" pos="0 -300 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-300_-300" pos="0 -300 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-300_-200" pos="0 -300 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-300_-100" pos="0 -300 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-300_0" pos="0 -300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-300_100" pos="0 -300 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-300_200" pos="0 -300 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-300_300" pos="0 -300 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-300_400" pos="0 -300 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_yz_-200_-400" pos="0 -200 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-200_-300" pos="0 -200 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-200_-200" pos="0 -200 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-200_-100" pos="0 -200 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-200_0" pos="0 -200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-200_100" pos="0 -200 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-200_200" pos="0 -200 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-200_300" pos="0 -200 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-200_400" pos="0 -200 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_yz_-100_-400" pos="0 -100 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-100_-300" pos="0 -100 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-100_-200" pos="0 -100 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-100_-100" pos="0 -100 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-100_0" pos="0 -100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-100_100" pos="0 -100 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-100_200" pos="0 -100 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-100_300" pos="0 -100 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_-100_400" pos="0 -100 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_yz_0_-400" pos="0 0 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_0_-300" pos="0 0 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_0_-200" pos="0 0 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_0_-100" pos="0 0 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_0_0" pos="0 0 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_0_100" pos="0 0 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_0_200" pos="0 0 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_0_300" pos="0 0 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_0_400" pos="0 0 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_yz_100_-400" pos="0 100 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_100_-300" pos="0 100 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_100_-200" pos="0 100 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_100_-100" pos="0 100 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_100_0" pos="0 100 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_100_100" pos="0 100 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_100_200" pos="0 100 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_100_300" pos="0 100 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_100_400" pos="0 100 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_yz_200_-400" pos="0 200 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_200_-300" pos="0 200 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_200_-200" pos="0 200 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_200_-100" pos="0 200 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_200_0" pos="0 200 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_200_100" pos="0 200 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_200_200" pos="0 200 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_200_300" pos="0 200 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_200_400" pos="0 200 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_yz_300_-400" pos="0 300 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_300_-300" pos="0 300 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_300_-200" pos="0 300 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_300_-100" pos="0 300 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_300_0" pos="0 300 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_300_100" pos="0 300 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_300_200" pos="0 300 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_300_300" pos="0 300 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_300_400" pos="0 300 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+                    
+                        <site name="point_yz_400_-400" pos="0 400 -400" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_400_-300" pos="0 400 -300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_400_-200" pos="0 400 -200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_400_-100" pos="0 400 -100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_400_0" pos="0 400 0" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_400_100" pos="0 400 100" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_400_200" pos="0 400 200" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_400_300" pos="0 400 300" size="5" rgba="1 1 0 1"/>
+                    
+                        <site name="point_yz_400_400" pos="0 400 400" size="5" rgba="1 1 0 1"/>
+                    
+                
+            </body>
+
+            <!-- Диагонали -->
+            <body name="diagonal_points">
+                
+                    
+                        
+                            <site name="diag_xyz_-400_-400_-400" pos="-400 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-400_-300" pos="-400 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-400_-200" pos="-400 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-400_-100" pos="-400 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-400_0" pos="-400 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-400_100" pos="-400 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-400_200" pos="-400 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-400_300" pos="-400 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-400_400" pos="-400 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-400_-300_-400" pos="-400 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-300_-300" pos="-400 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-300_-200" pos="-400 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-300_-100" pos="-400 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-300_0" pos="-400 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-300_100" pos="-400 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-300_200" pos="-400 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-300_300" pos="-400 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-300_400" pos="-400 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-400_-200_-400" pos="-400 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-200_-300" pos="-400 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-200_-200" pos="-400 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-200_-100" pos="-400 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-200_0" pos="-400 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-200_100" pos="-400 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-200_200" pos="-400 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-200_300" pos="-400 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-200_400" pos="-400 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-400_-100_-400" pos="-400 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-100_-300" pos="-400 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-100_-200" pos="-400 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-100_-100" pos="-400 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-100_0" pos="-400 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-100_100" pos="-400 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-100_200" pos="-400 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-100_300" pos="-400 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_-100_400" pos="-400 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-400_0_-400" pos="-400 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_0_-300" pos="-400 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_0_-200" pos="-400 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_0_-100" pos="-400 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_0_0" pos="-400 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_0_100" pos="-400 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_0_200" pos="-400 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_0_300" pos="-400 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_0_400" pos="-400 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-400_100_-400" pos="-400 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_100_-300" pos="-400 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_100_-200" pos="-400 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_100_-100" pos="-400 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_100_0" pos="-400 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_100_100" pos="-400 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_100_200" pos="-400 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_100_300" pos="-400 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_100_400" pos="-400 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-400_200_-400" pos="-400 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_200_-300" pos="-400 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_200_-200" pos="-400 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_200_-100" pos="-400 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_200_0" pos="-400 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_200_100" pos="-400 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_200_200" pos="-400 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_200_300" pos="-400 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_200_400" pos="-400 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-400_300_-400" pos="-400 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_300_-300" pos="-400 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_300_-200" pos="-400 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_300_-100" pos="-400 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_300_0" pos="-400 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_300_100" pos="-400 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_300_200" pos="-400 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_300_300" pos="-400 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_300_400" pos="-400 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-400_400_-400" pos="-400 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_400_-300" pos="-400 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_400_-200" pos="-400 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_400_-100" pos="-400 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_400_0" pos="-400 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_400_100" pos="-400 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_400_200" pos="-400 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_400_300" pos="-400 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-400_400_400" pos="-400 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+                    
+                        
+                            <site name="diag_xyz_-300_-400_-400" pos="-300 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-400_-300" pos="-300 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-400_-200" pos="-300 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-400_-100" pos="-300 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-400_0" pos="-300 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-400_100" pos="-300 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-400_200" pos="-300 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-400_300" pos="-300 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-400_400" pos="-300 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-300_-300_-400" pos="-300 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-300_-300" pos="-300 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-300_-200" pos="-300 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-300_-100" pos="-300 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-300_0" pos="-300 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-300_100" pos="-300 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-300_200" pos="-300 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-300_300" pos="-300 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-300_400" pos="-300 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-300_-200_-400" pos="-300 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-200_-300" pos="-300 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-200_-200" pos="-300 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-200_-100" pos="-300 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-200_0" pos="-300 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-200_100" pos="-300 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-200_200" pos="-300 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-200_300" pos="-300 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-200_400" pos="-300 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-300_-100_-400" pos="-300 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-100_-300" pos="-300 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-100_-200" pos="-300 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-100_-100" pos="-300 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-100_0" pos="-300 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-100_100" pos="-300 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-100_200" pos="-300 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-100_300" pos="-300 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_-100_400" pos="-300 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-300_0_-400" pos="-300 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_0_-300" pos="-300 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_0_-200" pos="-300 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_0_-100" pos="-300 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_0_0" pos="-300 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_0_100" pos="-300 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_0_200" pos="-300 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_0_300" pos="-300 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_0_400" pos="-300 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-300_100_-400" pos="-300 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_100_-300" pos="-300 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_100_-200" pos="-300 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_100_-100" pos="-300 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_100_0" pos="-300 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_100_100" pos="-300 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_100_200" pos="-300 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_100_300" pos="-300 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_100_400" pos="-300 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-300_200_-400" pos="-300 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_200_-300" pos="-300 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_200_-200" pos="-300 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_200_-100" pos="-300 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_200_0" pos="-300 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_200_100" pos="-300 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_200_200" pos="-300 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_200_300" pos="-300 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_200_400" pos="-300 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-300_300_-400" pos="-300 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_300_-300" pos="-300 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_300_-200" pos="-300 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_300_-100" pos="-300 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_300_0" pos="-300 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_300_100" pos="-300 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_300_200" pos="-300 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_300_300" pos="-300 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_300_400" pos="-300 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-300_400_-400" pos="-300 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_400_-300" pos="-300 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_400_-200" pos="-300 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_400_-100" pos="-300 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_400_0" pos="-300 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_400_100" pos="-300 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_400_200" pos="-300 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_400_300" pos="-300 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-300_400_400" pos="-300 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+                    
+                        
+                            <site name="diag_xyz_-200_-400_-400" pos="-200 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-400_-300" pos="-200 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-400_-200" pos="-200 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-400_-100" pos="-200 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-400_0" pos="-200 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-400_100" pos="-200 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-400_200" pos="-200 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-400_300" pos="-200 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-400_400" pos="-200 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-200_-300_-400" pos="-200 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-300_-300" pos="-200 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-300_-200" pos="-200 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-300_-100" pos="-200 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-300_0" pos="-200 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-300_100" pos="-200 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-300_200" pos="-200 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-300_300" pos="-200 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-300_400" pos="-200 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-200_-200_-400" pos="-200 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-200_-300" pos="-200 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-200_-200" pos="-200 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-200_-100" pos="-200 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-200_0" pos="-200 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-200_100" pos="-200 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-200_200" pos="-200 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-200_300" pos="-200 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-200_400" pos="-200 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-200_-100_-400" pos="-200 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-100_-300" pos="-200 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-100_-200" pos="-200 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-100_-100" pos="-200 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-100_0" pos="-200 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-100_100" pos="-200 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-100_200" pos="-200 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-100_300" pos="-200 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_-100_400" pos="-200 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-200_0_-400" pos="-200 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_0_-300" pos="-200 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_0_-200" pos="-200 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_0_-100" pos="-200 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_0_0" pos="-200 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_0_100" pos="-200 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_0_200" pos="-200 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_0_300" pos="-200 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_0_400" pos="-200 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-200_100_-400" pos="-200 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_100_-300" pos="-200 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_100_-200" pos="-200 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_100_-100" pos="-200 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_100_0" pos="-200 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_100_100" pos="-200 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_100_200" pos="-200 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_100_300" pos="-200 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_100_400" pos="-200 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-200_200_-400" pos="-200 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_200_-300" pos="-200 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_200_-200" pos="-200 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_200_-100" pos="-200 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_200_0" pos="-200 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_200_100" pos="-200 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_200_200" pos="-200 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_200_300" pos="-200 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_200_400" pos="-200 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-200_300_-400" pos="-200 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_300_-300" pos="-200 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_300_-200" pos="-200 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_300_-100" pos="-200 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_300_0" pos="-200 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_300_100" pos="-200 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_300_200" pos="-200 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_300_300" pos="-200 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_300_400" pos="-200 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-200_400_-400" pos="-200 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_400_-300" pos="-200 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_400_-200" pos="-200 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_400_-100" pos="-200 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_400_0" pos="-200 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_400_100" pos="-200 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_400_200" pos="-200 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_400_300" pos="-200 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-200_400_400" pos="-200 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+                    
+                        
+                            <site name="diag_xyz_-100_-400_-400" pos="-100 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-400_-300" pos="-100 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-400_-200" pos="-100 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-400_-100" pos="-100 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-400_0" pos="-100 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-400_100" pos="-100 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-400_200" pos="-100 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-400_300" pos="-100 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-400_400" pos="-100 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-100_-300_-400" pos="-100 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-300_-300" pos="-100 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-300_-200" pos="-100 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-300_-100" pos="-100 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-300_0" pos="-100 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-300_100" pos="-100 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-300_200" pos="-100 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-300_300" pos="-100 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-300_400" pos="-100 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-100_-200_-400" pos="-100 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-200_-300" pos="-100 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-200_-200" pos="-100 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-200_-100" pos="-100 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-200_0" pos="-100 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-200_100" pos="-100 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-200_200" pos="-100 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-200_300" pos="-100 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-200_400" pos="-100 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-100_-100_-400" pos="-100 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-100_-300" pos="-100 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-100_-200" pos="-100 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-100_-100" pos="-100 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-100_0" pos="-100 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-100_100" pos="-100 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-100_200" pos="-100 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-100_300" pos="-100 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_-100_400" pos="-100 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-100_0_-400" pos="-100 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_0_-300" pos="-100 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_0_-200" pos="-100 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_0_-100" pos="-100 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_0_0" pos="-100 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_0_100" pos="-100 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_0_200" pos="-100 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_0_300" pos="-100 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_0_400" pos="-100 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-100_100_-400" pos="-100 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_100_-300" pos="-100 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_100_-200" pos="-100 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_100_-100" pos="-100 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_100_0" pos="-100 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_100_100" pos="-100 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_100_200" pos="-100 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_100_300" pos="-100 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_100_400" pos="-100 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-100_200_-400" pos="-100 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_200_-300" pos="-100 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_200_-200" pos="-100 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_200_-100" pos="-100 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_200_0" pos="-100 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_200_100" pos="-100 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_200_200" pos="-100 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_200_300" pos="-100 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_200_400" pos="-100 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-100_300_-400" pos="-100 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_300_-300" pos="-100 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_300_-200" pos="-100 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_300_-100" pos="-100 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_300_0" pos="-100 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_300_100" pos="-100 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_300_200" pos="-100 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_300_300" pos="-100 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_300_400" pos="-100 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_-100_400_-400" pos="-100 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_400_-300" pos="-100 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_400_-200" pos="-100 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_400_-100" pos="-100 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_400_0" pos="-100 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_400_100" pos="-100 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_400_200" pos="-100 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_400_300" pos="-100 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_-100_400_400" pos="-100 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+                    
+                        
+                            <site name="diag_xyz_0_-400_-400" pos="0 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-400_-300" pos="0 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-400_-200" pos="0 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-400_-100" pos="0 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-400_0" pos="0 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-400_100" pos="0 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-400_200" pos="0 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-400_300" pos="0 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-400_400" pos="0 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_0_-300_-400" pos="0 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-300_-300" pos="0 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-300_-200" pos="0 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-300_-100" pos="0 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-300_0" pos="0 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-300_100" pos="0 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-300_200" pos="0 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-300_300" pos="0 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-300_400" pos="0 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_0_-200_-400" pos="0 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-200_-300" pos="0 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-200_-200" pos="0 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-200_-100" pos="0 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-200_0" pos="0 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-200_100" pos="0 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-200_200" pos="0 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-200_300" pos="0 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-200_400" pos="0 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_0_-100_-400" pos="0 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-100_-300" pos="0 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-100_-200" pos="0 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-100_-100" pos="0 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-100_0" pos="0 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-100_100" pos="0 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-100_200" pos="0 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-100_300" pos="0 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_-100_400" pos="0 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_0_0_-400" pos="0 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_0_-300" pos="0 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_0_-200" pos="0 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_0_-100" pos="0 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_0_0" pos="0 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_0_100" pos="0 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_0_200" pos="0 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_0_300" pos="0 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_0_400" pos="0 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_0_100_-400" pos="0 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_100_-300" pos="0 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_100_-200" pos="0 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_100_-100" pos="0 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_100_0" pos="0 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_100_100" pos="0 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_100_200" pos="0 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_100_300" pos="0 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_100_400" pos="0 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_0_200_-400" pos="0 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_200_-300" pos="0 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_200_-200" pos="0 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_200_-100" pos="0 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_200_0" pos="0 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_200_100" pos="0 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_200_200" pos="0 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_200_300" pos="0 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_200_400" pos="0 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_0_300_-400" pos="0 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_300_-300" pos="0 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_300_-200" pos="0 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_300_-100" pos="0 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_300_0" pos="0 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_300_100" pos="0 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_300_200" pos="0 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_300_300" pos="0 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_300_400" pos="0 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_0_400_-400" pos="0 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_400_-300" pos="0 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_400_-200" pos="0 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_400_-100" pos="0 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_400_0" pos="0 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_400_100" pos="0 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_400_200" pos="0 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_400_300" pos="0 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_0_400_400" pos="0 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+                    
+                        
+                            <site name="diag_xyz_100_-400_-400" pos="100 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-400_-300" pos="100 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-400_-200" pos="100 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-400_-100" pos="100 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-400_0" pos="100 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-400_100" pos="100 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-400_200" pos="100 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-400_300" pos="100 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-400_400" pos="100 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_100_-300_-400" pos="100 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-300_-300" pos="100 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-300_-200" pos="100 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-300_-100" pos="100 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-300_0" pos="100 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-300_100" pos="100 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-300_200" pos="100 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-300_300" pos="100 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-300_400" pos="100 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_100_-200_-400" pos="100 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-200_-300" pos="100 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-200_-200" pos="100 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-200_-100" pos="100 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-200_0" pos="100 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-200_100" pos="100 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-200_200" pos="100 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-200_300" pos="100 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-200_400" pos="100 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_100_-100_-400" pos="100 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-100_-300" pos="100 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-100_-200" pos="100 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-100_-100" pos="100 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-100_0" pos="100 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-100_100" pos="100 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-100_200" pos="100 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-100_300" pos="100 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_-100_400" pos="100 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_100_0_-400" pos="100 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_0_-300" pos="100 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_0_-200" pos="100 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_0_-100" pos="100 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_0_0" pos="100 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_0_100" pos="100 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_0_200" pos="100 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_0_300" pos="100 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_0_400" pos="100 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_100_100_-400" pos="100 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_100_-300" pos="100 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_100_-200" pos="100 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_100_-100" pos="100 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_100_0" pos="100 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_100_100" pos="100 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_100_200" pos="100 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_100_300" pos="100 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_100_400" pos="100 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_100_200_-400" pos="100 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_200_-300" pos="100 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_200_-200" pos="100 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_200_-100" pos="100 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_200_0" pos="100 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_200_100" pos="100 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_200_200" pos="100 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_200_300" pos="100 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_200_400" pos="100 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_100_300_-400" pos="100 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_300_-300" pos="100 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_300_-200" pos="100 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_300_-100" pos="100 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_300_0" pos="100 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_300_100" pos="100 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_300_200" pos="100 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_300_300" pos="100 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_300_400" pos="100 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_100_400_-400" pos="100 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_400_-300" pos="100 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_400_-200" pos="100 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_400_-100" pos="100 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_400_0" pos="100 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_400_100" pos="100 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_400_200" pos="100 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_400_300" pos="100 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_100_400_400" pos="100 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+                    
+                        
+                            <site name="diag_xyz_200_-400_-400" pos="200 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-400_-300" pos="200 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-400_-200" pos="200 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-400_-100" pos="200 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-400_0" pos="200 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-400_100" pos="200 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-400_200" pos="200 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-400_300" pos="200 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-400_400" pos="200 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_200_-300_-400" pos="200 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-300_-300" pos="200 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-300_-200" pos="200 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-300_-100" pos="200 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-300_0" pos="200 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-300_100" pos="200 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-300_200" pos="200 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-300_300" pos="200 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-300_400" pos="200 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_200_-200_-400" pos="200 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-200_-300" pos="200 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-200_-200" pos="200 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-200_-100" pos="200 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-200_0" pos="200 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-200_100" pos="200 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-200_200" pos="200 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-200_300" pos="200 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-200_400" pos="200 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_200_-100_-400" pos="200 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-100_-300" pos="200 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-100_-200" pos="200 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-100_-100" pos="200 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-100_0" pos="200 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-100_100" pos="200 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-100_200" pos="200 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-100_300" pos="200 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_-100_400" pos="200 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_200_0_-400" pos="200 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_0_-300" pos="200 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_0_-200" pos="200 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_0_-100" pos="200 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_0_0" pos="200 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_0_100" pos="200 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_0_200" pos="200 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_0_300" pos="200 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_0_400" pos="200 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_200_100_-400" pos="200 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_100_-300" pos="200 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_100_-200" pos="200 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_100_-100" pos="200 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_100_0" pos="200 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_100_100" pos="200 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_100_200" pos="200 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_100_300" pos="200 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_100_400" pos="200 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_200_200_-400" pos="200 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_200_-300" pos="200 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_200_-200" pos="200 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_200_-100" pos="200 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_200_0" pos="200 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_200_100" pos="200 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_200_200" pos="200 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_200_300" pos="200 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_200_400" pos="200 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_200_300_-400" pos="200 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_300_-300" pos="200 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_300_-200" pos="200 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_300_-100" pos="200 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_300_0" pos="200 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_300_100" pos="200 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_300_200" pos="200 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_300_300" pos="200 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_300_400" pos="200 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_200_400_-400" pos="200 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_400_-300" pos="200 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_400_-200" pos="200 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_400_-100" pos="200 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_400_0" pos="200 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_400_100" pos="200 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_400_200" pos="200 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_400_300" pos="200 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_200_400_400" pos="200 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+                    
+                        
+                            <site name="diag_xyz_300_-400_-400" pos="300 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-400_-300" pos="300 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-400_-200" pos="300 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-400_-100" pos="300 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-400_0" pos="300 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-400_100" pos="300 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-400_200" pos="300 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-400_300" pos="300 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-400_400" pos="300 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_300_-300_-400" pos="300 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-300_-300" pos="300 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-300_-200" pos="300 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-300_-100" pos="300 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-300_0" pos="300 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-300_100" pos="300 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-300_200" pos="300 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-300_300" pos="300 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-300_400" pos="300 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_300_-200_-400" pos="300 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-200_-300" pos="300 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-200_-200" pos="300 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-200_-100" pos="300 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-200_0" pos="300 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-200_100" pos="300 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-200_200" pos="300 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-200_300" pos="300 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-200_400" pos="300 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_300_-100_-400" pos="300 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-100_-300" pos="300 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-100_-200" pos="300 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-100_-100" pos="300 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-100_0" pos="300 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-100_100" pos="300 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-100_200" pos="300 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-100_300" pos="300 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_-100_400" pos="300 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_300_0_-400" pos="300 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_0_-300" pos="300 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_0_-200" pos="300 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_0_-100" pos="300 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_0_0" pos="300 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_0_100" pos="300 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_0_200" pos="300 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_0_300" pos="300 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_0_400" pos="300 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_300_100_-400" pos="300 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_100_-300" pos="300 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_100_-200" pos="300 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_100_-100" pos="300 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_100_0" pos="300 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_100_100" pos="300 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_100_200" pos="300 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_100_300" pos="300 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_100_400" pos="300 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_300_200_-400" pos="300 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_200_-300" pos="300 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_200_-200" pos="300 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_200_-100" pos="300 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_200_0" pos="300 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_200_100" pos="300 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_200_200" pos="300 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_200_300" pos="300 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_200_400" pos="300 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_300_300_-400" pos="300 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_300_-300" pos="300 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_300_-200" pos="300 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_300_-100" pos="300 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_300_0" pos="300 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_300_100" pos="300 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_300_200" pos="300 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_300_300" pos="300 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_300_400" pos="300 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_300_400_-400" pos="300 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_400_-300" pos="300 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_400_-200" pos="300 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_400_-100" pos="300 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_400_0" pos="300 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_400_100" pos="300 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_400_200" pos="300 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_400_300" pos="300 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_300_400_400" pos="300 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+                    
+                        
+                            <site name="diag_xyz_400_-400_-400" pos="400 -400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-400_-300" pos="400 -400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-400_-200" pos="400 -400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-400_-100" pos="400 -400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-400_0" pos="400 -400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-400_100" pos="400 -400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-400_200" pos="400 -400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-400_300" pos="400 -400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-400_400" pos="400 -400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_400_-300_-400" pos="400 -300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-300_-300" pos="400 -300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-300_-200" pos="400 -300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-300_-100" pos="400 -300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-300_0" pos="400 -300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-300_100" pos="400 -300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-300_200" pos="400 -300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-300_300" pos="400 -300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-300_400" pos="400 -300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_400_-200_-400" pos="400 -200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-200_-300" pos="400 -200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-200_-200" pos="400 -200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-200_-100" pos="400 -200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-200_0" pos="400 -200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-200_100" pos="400 -200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-200_200" pos="400 -200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-200_300" pos="400 -200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-200_400" pos="400 -200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_400_-100_-400" pos="400 -100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-100_-300" pos="400 -100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-100_-200" pos="400 -100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-100_-100" pos="400 -100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-100_0" pos="400 -100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-100_100" pos="400 -100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-100_200" pos="400 -100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-100_300" pos="400 -100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_-100_400" pos="400 -100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_400_0_-400" pos="400 0 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_0_-300" pos="400 0 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_0_-200" pos="400 0 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_0_-100" pos="400 0 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_0_0" pos="400 0 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_0_100" pos="400 0 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_0_200" pos="400 0 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_0_300" pos="400 0 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_0_400" pos="400 0 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_400_100_-400" pos="400 100 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_100_-300" pos="400 100 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_100_-200" pos="400 100 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_100_-100" pos="400 100 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_100_0" pos="400 100 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_100_100" pos="400 100 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_100_200" pos="400 100 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_100_300" pos="400 100 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_100_400" pos="400 100 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_400_200_-400" pos="400 200 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_200_-300" pos="400 200 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_200_-200" pos="400 200 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_200_-100" pos="400 200 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_200_0" pos="400 200 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_200_100" pos="400 200 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_200_200" pos="400 200 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_200_300" pos="400 200 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_200_400" pos="400 200 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_400_300_-400" pos="400 300 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_300_-300" pos="400 300 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_300_-200" pos="400 300 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_300_-100" pos="400 300 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_300_0" pos="400 300 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_300_100" pos="400 300 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_300_200" pos="400 300 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_300_300" pos="400 300 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_300_400" pos="400 300 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                        
+                            <site name="diag_xyz_400_400_-400" pos="400 400 -400" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_400_-300" pos="400 400 -300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_400_-200" pos="400 400 -200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_400_-100" pos="400 400 -100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_400_0" pos="400 400 0" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_400_100" pos="400 400 100" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_400_200" pos="400 400 200" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_400_300" pos="400 400 300" size="5" rgba="1 0 1 1"/>
+                        
+                            <site name="diag_xyz_400_400_400" pos="400 400 400" size="5" rgba="1 0 1 1"/>
+                        
+                    
+                
+            </body>
+        </body>
+        
+        <body name="Base" pos="0 0 0">
+    <geom type="mesh" mesh="base_mesh100" pos="0 0 0"  density="500"/>
+    <geom type="mesh" mesh="base_mesh350" pos="0 0 0"  density="500"/>
+    <geom type="mesh" mesh="base_mesh360" pos="0 0 0"  density="500"/>
+    <geom type="mesh" mesh="base_mesh010" pos="0 0 0"  density="500"/> 
+    <geom type="mesh" mesh="base_mesh000" pos="0 0 0"  density="500"/>
+    <geom type="mesh" mesh="base_mesh1" pos="0 0 0"  density="500"/>
+
+    <body name="Shoulder" pos="0 0 0.5">
+        <joint name="joint_0" type="hinge" axis="0 0 1" pos="100 100 160" range="-180 180" damping="0.1" frictionloss="0"/>
+        <geom type="sphere" size="30" pos="100 100 160"/>
+        <geom type="mesh" mesh="shoulder_mesh" mass="1" contype="1" conaffinity="1"/>
+
+        <body name="Arm1" pos="0 0 0.25">
+            <joint name="joint_1" type="hinge" axis="1 0 0" pos="100 100 243" range="-90 90" damping="0.1" frictionloss="0"/>
+            <geom type="sphere" size="3" pos="100 100 243"/>
+			<geom type="mesh" mesh="elbow_mesh0" mass="1" contype="1" conaffinity="1"/>
+            <geom type="mesh" mesh="elbow_mesh1" mass="1" contype="1" conaffinity="1"/>
+
+            <body name="Arm2" pos="0 0 0.4">
+                <joint name="joint_2" type="hinge" axis="1 0 0" pos="100 92.5 400" range="-90 90" damping="0.1" frictionloss="0"/>
+                <geom type="sphere" size="3" pos="100 92.5 400"/>
+				<geom type="mesh" mesh="arm1_mesh" mass="2" contype="1" conaffinity="1"/>
+				
+                
+
+                <body name="Elbow" pos="0 0 0.3">
+                    <joint name="joint_3" type="hinge" axis="0 0 1" pos="85 95 477.5" range="-90 90" damping="0.1" frictionloss="0"/>
+                    <geom type="sphere" size="3" pos="85 95 477.5"/>
+					<geom type="mesh" mesh="arm2_mesh" mass="2" contype="1" conaffinity="1"/>
+                    
+
+                    <body name="Arm3" pos="0 0 0.3">
+                        <joint name="joint_4" type="hinge" axis="1 0 0" pos="85 95 547.5" range="-90 90" damping="0.1" frictionloss="0"/>
+                        <geom type="sphere" size="3" pos="85 95 547.5"/>
+                        <geom type="mesh" mesh="arm30_mesh" mass="1" contype="2" conaffinity="1"/>
+                        <geom type="mesh" mesh="arm31_mesh" mass="1" contype="2" conaffinity="1"/>
+                        <geom type="mesh" mesh="arm301_mesh" mass="1" contype="2" conaffinity="1"/>
+						<geom name="gripper_inner" type="box" size="18 1 16" pos="85 115 750" rgba="1 0 0 0.6" condim="6"/>
+						<site name="gripper_inner_site" pos="85 115 750" size="1" rgba="1 0 0 0.5"/>
+
+                        <body name="Gripper" pos="0 0 0.1">
+                            <joint name="joint_5" type="hinge" axis="1 0 0" pos="85 95 627.5" range="-15 90" damping="0.1" frictionloss="0"/>
+                            <geom type="sphere" size="3" pos="85 95 627.5"/>
+                            <geom name="gripper_geom" type="mesh" mesh="gripper_mesh" mass="0.1" contype="2" conaffinity="1"/>
+                            <geom name="gripper_upper" type="box" size="18 1 16" pos=" 85 80 750" rgba="1 0 0 0.6" condim="6"/>
+                            <site name="gripper_upper_site" pos=" 85 80 750" size="1 18 16" rgba="1 0 0 0.5"/>
+                            <site name="gripper" pos="0 0 0.05" size="0.02" rgba="1 0 0 0.5"/>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </body>
+</body>
+
+
+
+        <!-- ✅ Чашка теперь ведёт себя как в реальном мире -->
+		
+    
+    <geom name="target_cube" type="box" size="10 20 120"
+          pos="-100.0 100.0 0.0" rgba="0 1 0 1" contype="1" conaffinity="1"/>
+</worldbody>
+    <sensor>
+		<touch name="gripper_lower_touch" site="gripper_inner_site"/>
+		<touch name="gripper_upper_touch" site="gripper_upper_site"/>
+	</sensor>
+	
+
+<!--<actuator>
+    <position name="servo_0" joint="joint_0" kp="1000000000" gear="5000" ctrlrange="-180 180" ctrllimited="true" forcelimited="false"/>
+    <position name="servo_1" joint="joint_1" kp="20000000"  gear="200" ctrlrange="-90 90" ctrllimited="true"forcelimited="false"/>
+    <position name="servo_2" joint="joint_2" kp="20000000"  gear="200" ctrlrange="-90 90" ctrllimited="true"forcelimited="false"/>
+    <position name="servo_3" joint="joint_3" kp="20000000"  gear="200" ctrlrange="-90 90" ctrllimited="true"forcelimited="false"/>
+    <position name="servo_4" joint="joint_4" kp="20000000"  gear="200" ctrlrange="-90 90" ctrllimited="true"forcelimited="false"/>
+    <position name="servo_5" joint="joint_5" kp="20000000"  gear="200" ctrlrange="-15 90" ctrllimited="true"forcelimited="false"/>
+</actuator>-->
+
+
+
+
+
+
+
+	<!-- <default>
+       <motor ctrllimited="true" ctrlrange="-1 1"/>
+    </default> -->
+
+    
+</mujoco>

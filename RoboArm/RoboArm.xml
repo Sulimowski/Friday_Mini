@@ -1,0 +1,94 @@
+<?xml version="1.0" ?>
+<mujoco model="robot_arm">
+    <option timestep="0.002" gravity="0 0 -30"/>  <!-- ✅ Реалистичная гравитация -->
+
+    <visual>
+        <map force="0.1" zfar="5000"/>
+        <rgba haze="0.15 0.25 0.35 1"/>
+        <global offwidth="2560" offheight="1440" elevation="-20" azimuth="120"/>
+    </visual>
+
+    <statistic center="0 0 1.5"/>
+
+    <asset>
+        <mesh name="base_mesh" file="Base0.stl"/>
+        <mesh name="shoulder_mesh" file="Shoulder0.stl"/>
+        <mesh name="elbow_mesh" file="Elbow0.stl"/>
+        <mesh name="arm1_mesh" file="Arm 10.stl"/>
+        <mesh name="arm2_mesh" file="Arm 20.stl"/>
+        <mesh name="arm3_mesh" file="Arm 30.stl"/>
+        <mesh name="wrist_mesh" file="WriST.stl"/>
+        <mesh name="gripper_mesh" file="gripper10.stl"/>
+        <mesh name="cup_mesh" file="cup.stl"/>
+    </asset>
+
+    <worldbody>
+        <geom name="floor" type="plane" size="1000 1000 0.05" rgba="0.5 0.5 0.5 1" condim="3" friction="1.2 1.2 1.2" contype="1" conaffinity="1"/>
+		
+
+        <body name="Base" pos="0 0 0">
+            <geom type="mesh" mesh="base_mesh"/>
+
+            <body name="Shoulder" pos="0 0 0.5">
+                <joint name="joint_0" type="hinge" axis="0 0 1" pos="-10 85 120" range="-180 180" damping="5"/>
+                <geom type="mesh" mesh="shoulder_mesh" contype="1" conaffinity="1"/>
+
+                <body name="Arm1" pos="0 0 0.25">
+                    <joint name="joint_1" type="hinge" axis="0 1 0" pos="-10 62.5 227.5" range="-90 90" damping="5"/>
+                    <geom type="mesh" mesh="arm1_mesh" contype="1" conaffinity="1"/>
+
+                    <body name="Arm2" pos="0 0 0.4">
+                        <joint name="joint_2" type="hinge" axis="0 1 0" pos="-10 62.5 315" range="-90 90" damping="5"/>
+                        <geom type="mesh" mesh="arm2_mesh" contype="1" conaffinity="1"/>
+
+                        <body name="Elbow" pos="0 0 0.3">
+                            <joint name="joint_3" type="hinge" axis="0 1 0" pos="-10 65 422.5" range="-90 90" damping="5"/>
+                            <geom type="mesh" mesh="elbow_mesh" contype="1" conaffinity="1"/>
+
+                            <body name="Arm3" pos="0 0 0.3">
+                                <joint name="joint_4" type="hinge" axis="0 0 1" pos="-10 85 487.5" range="-90 90" damping="5"/>
+                                <geom type="mesh" mesh="arm3_mesh" contype="1" conaffinity="1"/>
+
+                                <body name="Wrist" pos="0 0 0.2">
+                                    <joint name="joint_5" type="hinge" axis="0 1 0" pos="-10 67.5 597.5" range="-90 90" damping="5"/>
+                                    <geom type="mesh" mesh="wrist_mesh" contype="1" conaffinity="1"/>
+									<!-- ✅ ВИДИМАЯ зона внутри хвата -->
+                                    <geom name="gripper_inner" type="box" size="1 18 16" pos="-2 83.5 797.5" rgba="1 0 0 0.6" condim="6"/>
+									<site name="gripper_inner_site" pos="-2 83.5 797.5" size="0.02" rgba="1 0 0 0.5"/>
+                                    <camera name="gripper_cam" pos="-35 84.5 721.5" quat="1 0 0 0" fovy="90"/>
+
+                                    <body name="Gripper" pos="0 0 0.1">
+                                        <joint name="joint_6" type="hinge" axis="0 1 0" pos="-25 67.5 697.5" range="-90 15" damping="5"/>
+                                        <geom name="gripper_geom" type="mesh" mesh="gripper_mesh" contype="1" conaffinity="1"/>
+										<geom name="gripper_upper" type="box" size="1 18 16" pos="-41.5 83.5 797.5" rgba="1 0 0 0.6" condim="6"/>
+										<site name="gripper_upper_site" pos="-41.5 83.5 797.5" size="0.02" rgba="1 0 0 0.5"/>
+                                        <site name="gripper" pos="0 0 0.05" size="0.02" rgba="1 0 0 0.5"/>
+                                    </body>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+
+        <!-- ✅ Чашка теперь ведёт себя как в реальном мире -->
+		<body name="cup" pos="0 0 0.05">
+			<joint name="cup_joint" type="free" stiffness="10000" damping="1000" armature="0.08" limited="true" range="0 0"/>  
+			<geom name="cup_geom" type="mesh" mesh="cup_mesh" density="800" rgba="1 1 0 1" condim="6" friction="1.5 1.5 1.5" solimp="0.95 0.95 0.001" solref="0.02 1"/>
+		</body>
+
+
+
+    </worldbody>
+	<sensor>
+		<touch name="gripper_lower_touch" site="gripper_inner_site"/>
+		<touch name="gripper_upper_touch" site="gripper_upper_site"/>
+	</sensor>
+
+
+
+    <actuator>
+    </actuator>
+
+</mujoco>

@@ -1,0 +1,140 @@
+2025-02-15 01:44:53 [INFO] POST /p/p/workbench/api/portal/index/country HTTP/1.1
+Host: cloud-universe.anycubic.com
+Accept: */*
+Content-Type:application/x-www-form-urlencoded
+XX-Device-Type:pc
+XX-IS-CN:1
+XX-LANGUAGE:US
+XX-Nonce:4dfbc8d2-64b2-4ef2-9802-cf71f25201a3
+XX-Signature:F9A4B9A4BDADA650EF0B153C638AE09A
+XX-Timestamp:1739576693291
+XX-Version:V3.0.0
+Content-Length: 9
+
+
+2025-02-15 01:44:53 [INFO] GET /p/p/workbench/api/portal/index/reason HTTP/1.1
+Host: cloud-universe.anycubic.com
+Accept: */*
+Content-Type:application/x-www-form-urlencoded
+XX-Device-Type:pc
+XX-IS-CN:1
+XX-LANGUAGE:US
+XX-Nonce:c97e246a-76cc-42f4-beb1-e411cd7984b5
+XX-Signature:43DA02514E2B8DB2FE1E38B4F653B1BE
+XX-Timestamp:1739576693292
+XX-Version:V3.0.0
+
+
+2025-02-15 01:44:53 [INFO] is_home=0
+2025-02-15 01:44:53 [INFO] HTTP/1.1 200 OK
+
+2025-02-15 01:44:53 [INFO] Date: Fri, 14 Feb 2025 23:50:53 GMT
+
+2025-02-15 01:44:53 [INFO] Content-Type: application/json; charset=utf-8
+
+2025-02-15 01:44:53 [INFO] Content-Length: 62
+
+2025-02-15 01:44:53 [INFO] Connection: keep-alive
+
+2025-02-15 01:44:53 [INFO] Access-Control-Allow-Origin: *
+
+2025-02-15 01:44:53 [INFO] Access-Control-Allow-Headers: X-Requested-With,Content-Type,XX-Device-Type,XX-Token,XX-Api-Version,XX-Wxapp-AppId,XX-TestCipher,XX-Timestamp,XX-Nonce,XX-Version,XX-Signature
+
+2025-02-15 01:44:53 [INFO] Access-Control-Allow-Methods: GET,POST,PATCH,PUT,DELETE,OPTIONS
+
+2025-02-15 01:44:53 [INFO] Strict-Transport-Security: max-age=15724800; includeSubDomains
+
+2025-02-15 01:44:53 [INFO] 
+
+2025-02-15 01:44:53 [INFO] {"code":51001,"msg":"Invalid signature timestamp","data":null}
+2025-02-15 01:44:53 [INFO] HTTP/1.1 200 OK
+
+2025-02-15 01:44:53 [INFO] Date: Fri, 14 Feb 2025 23:50:53 GMT
+
+2025-02-15 01:44:53 [INFO] Content-Type: application/json; charset=utf-8
+
+2025-02-15 01:44:53 [INFO] Content-Length: 62
+
+2025-02-15 01:44:53 [INFO] Connection: keep-alive
+
+2025-02-15 01:44:53 [INFO] Access-Control-Allow-Origin: *
+
+2025-02-15 01:44:53 [INFO] Access-Control-Allow-Headers: X-Requested-With,Content-Type,XX-Device-Type,XX-Token,XX-Api-Version,XX-Wxapp-AppId,XX-TestCipher,XX-Timestamp,XX-Nonce,XX-Version,XX-Signature
+
+2025-02-15 01:44:53 [INFO] Access-Control-Allow-Methods: GET,POST,PATCH,PUT,DELETE,OPTIONS
+
+2025-02-15 01:44:53 [INFO] Strict-Transport-Security: max-age=15724800; includeSubDomains
+
+2025-02-15 01:44:53 [INFO] 
+
+2025-02-15 01:44:53 [INFO] {"code":51001,"msg":"Invalid signature timestamp","data":null}
+2025-02-15 01:44:55 [INFO] GET /p/p/workbench/api/portal/index/reason HTTP/1.1
+Host: cloud-universe.anycubic.com
+Accept: */*
+Content-Type:application/x-www-form-urlencoded
+XX-Device-Type:pc
+XX-IS-CN:1
+XX-LANGUAGE:US
+XX-Nonce:35106d58-fdf9-44bc-8102-3ebe765bb5dc
+XX-Signature:211DDA0F66452C9213F4765FD2206284
+XX-Timestamp:1739576695177
+XX-Version:V3.0.0
+
+
+2025-02-15 01:44:55 [INFO] POST /p/p/workbench/api/portal/index/country HTTP/1.1
+Host: cloud-universe.anycubic.com
+Accept: */*
+Content-Type:application/x-www-form-urlencoded
+XX-Device-Type:pc
+XX-IS-CN:1
+XX-LANGUAGE:US
+XX-Nonce:b120eac3-b13d-48bf-a73c-1d071867e005
+XX-Signature:AC6F9CB1860DA537B276E7186D1E7B9E
+XX-Timestamp:1739576695177
+XX-Version:V3.0.0
+Content-Length: 9
+
+
+2025-02-15 01:44:55 [INFO] is_home=0
+2025-02-15 01:44:55 [INFO] HTTP/1.1 200 OK
+
+2025-02-15 01:44:55 [INFO] Date: Fri, 14 Feb 2025 23:50:55 GMT
+
+2025-02-15 01:44:55 [INFO] Content-Type: application/json; charset=utf-8
+
+2025-02-15 01:44:55 [INFO] Content-Length: 62
+
+2025-02-15 01:44:55 [INFO] Connection: keep-alive
+
+2025-02-15 01:44:55 [INFO] Access-Control-Allow-Origin: *
+
+2025-02-15 01:44:55 [INFO] Access-Control-Allow-Headers: X-Requested-With,Content-Type,XX-Device-Type,XX-Token,XX-Api-Version,XX-Wxapp-AppId,XX-TestCipher,XX-Timestamp,XX-Nonce,XX-Version,XX-Signature
+
+2025-02-15 01:44:55 [INFO] Access-Control-Allow-Methods: GET,POST,PATCH,PUT,DELETE,OPTIONS
+
+2025-02-15 01:44:55 [INFO] Strict-Transport-Security: max-age=15724800; includeSubDomains
+
+2025-02-15 01:44:55 [INFO] 
+
+2025-02-15 01:44:55 [INFO] {"code":51001,"msg":"Invalid signature timestamp","data":null}
+2025-02-15 01:44:55 [INFO] HTTP/1.1 200 OK
+
+2025-02-15 01:44:55 [INFO] Date: Fri, 14 Feb 2025 23:50:55 GMT
+
+2025-02-15 01:44:55 [INFO] Content-Type: application/json; charset=utf-8
+
+2025-02-15 01:44:55 [INFO] Content-Length: 62
+
+2025-02-15 01:44:55 [INFO] Connection: keep-alive
+
+2025-02-15 01:44:55 [INFO] Access-Control-Allow-Origin: *
+
+2025-02-15 01:44:55 [INFO] Access-Control-Allow-Headers: X-Requested-With,Content-Type,XX-Device-Type,XX-Token,XX-Api-Version,XX-Wxapp-AppId,XX-TestCipher,XX-Timestamp,XX-Nonce,XX-Version,XX-Signature
+
+2025-02-15 01:44:55 [INFO] Access-Control-Allow-Methods: GET,POST,PATCH,PUT,DELETE,OPTIONS
+
+2025-02-15 01:44:55 [INFO] Strict-Transport-Security: max-age=15724800; includeSubDomains
+
+2025-02-15 01:44:55 [INFO] 
+
+2025-02-15 01:44:55 [INFO] {"code":51001,"msg":"Invalid signature timestamp","data":null}
