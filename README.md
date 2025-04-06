@@ -18,7 +18,7 @@
 
 <table>
   <tr>
-    <td><strong>• Построить сына и высрать дом — !@#12</strong></td>
+    <td><strong>• Построить сына и высрать дом — ∞</strong></td>
     <td>
       <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[███████████████████████████]+150%25">
     </td>
