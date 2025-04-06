@@ -23,9 +23,7 @@ git clone https://github.com/Sulimowski/Friday_Mini.git
 
 ---
 
-# 🧨 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=8000FF&lines=DEAD+suka+LINE)](https://git.io/typing-svg)**
-
-### 📈 Прогресс по проекту
+### 🧨 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=8000FF&lines=DEAD+suka+LINE)](https://git.io/typing-svg)**
 
 **• Кинематика в Mujoco — 10.04**  
 ![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[███████████████------]+70%25)
