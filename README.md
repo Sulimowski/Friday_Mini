@@ -28,13 +28,14 @@ git clone https://github.com/Sulimowski/Friday_Mini.git
 ### 📈 Прогресс по проекту
 
 **• Кинематика в Mujoco — 10.04**  
-`[███████████████------] 70%`
+![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[███████████████------]+70%25)
 
 **• 3D-карта реальных объектов — 10.04**  
-`[███████████████------] 70%`
+![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[███████████████------]+70%25)
 
 **• Построить мини версию — 15.04**  
-`[████████----------] 40%`
+![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[████████----------]+40%25)
+
 
 
 
