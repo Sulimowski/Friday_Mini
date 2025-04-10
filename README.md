@@ -1,6 +1,6 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Sulimowski/Friday_Mini/FRIDAY_RL/{37CEDE61-1618-4E05-8D94-9A1F226398AE}.png" width="800"/>
-</p>
+
+![preview]({37CEDE61-1618-4E05-8D94-9A1F226398AE}.png)     
+## Хуйлуша уже берет кубик но нужно грамотно дообучать модель и разввивать ее навыки
 
 # FRIDAY_Mini — Архитектура Пятницы
 
