@@ -1,6 +1,22 @@
+# 🧨 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=8000FF&lines=PLAN+I+DEAD+LINE)](https://git.io/typing-svg)**
+
+**• Система дообучения которая не будет ломать прошлые веса и конфиг — 12.04**  
+![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[█-█-█-█-█-█-█-█-█-█-█-█])
+
+**• Дообучить брать кубик не сдвигая его и не сбивая — 13.04**  
+![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[█-█-█-█-█-█-█-█-█-█-█-█])
+
+**• Дообучить брать кубик в рандонмных местах — 15.04**  
+---
+
+![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[█-█-█-█-█-█-█-█-█-█-█-█])
+
+
+**• Добить полный стартовый функцыонал на агенте — 20.04**  
+![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[█████-----------------]+20%25)
 
 ![preview]({37CEDE61-1618-4E05-8D94-9A1F226398AE}.png)     
-## Хуйлуша уже берет кубик но нужно грамотно дообучать модель и разввивать ее навыки
+## Чудище уже берет кубик но нужно грамотно дообучать модель и разввивать ее навыки
 
 # FRIDAY_Mini — Архитектура Пятницы
 
@@ -26,16 +42,6 @@ git clone https://github.com/Sulimowski/Friday_Mini.git
 
 ---
 
-# 🧨 **[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=8000FF&lines=DEAD+suka+LINE)](https://git.io/typing-svg)**
-
-**•** Кинематика в PyBullet — 6.04  
-**•** 3D-карта реальных объектов — 6.04  
-**•** Построить мини версию — 15.04
-
-**•** Построить дом и выростить сына — 1№:!"№?5
-
-
----
 
 **Made with ❤️ by Sulimowski**
 
