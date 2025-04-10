@@ -1,0 +1,137 @@
+<?xml version="1.0" ?>
+<mujoco model="robot_arm">
+    <option timestep="0.002" gravity="0 0 -30"
+            solver="PGS" iterations="300" impratio="100"
+            integrator="implicitfast" />
+    <default>
+        <default class="servo">
+            <general gaintype="fixed" biastype="affine"
+                     gainprm="2000" biasprm="0 -4000 -500"
+                     ctrllimited="true"/>
+        </default> 
+        <default class="strong_servo">
+            <general gaintype="fixed" biastype="affine"
+                     gainprm="4000" biasprm="0 -6000 -1000"
+                     ctrllimited="true"/>
+        </default>
+    </default>
+
+    <visual>
+        <global offwidth="1920" offheight="1080" elevation="-20" azimuth="120"/>
+        <map znear="0.1" zfar="10"/>
+		<quality shadowsize="8192"/>	
+        <rgba fog="1 1 1 1" haze="1 1 1 1"/>
+    </visual>
+
+    <asset>
+        <mesh name="base_mesh1" file="BASA.stl"/>
+        <mesh name="shoulder_mesh" file="A.stl"/>
+        <mesh name="elbow_mesh0" file="A2.stl"/>
+        <mesh name="arm1_mesh" file="A3.stl"/>
+        <mesh name="arm2_mesh" file="A4.stl"/>
+        <mesh name="arm31_mesh" file="A5.stl"/>
+        <mesh name="gripper_mesh" file="GRIPPER.stl"/>
+		    <texture name="checker_tex" type="2d" builtin="checker"
+             width="100" height="100" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+    
+    <!-- Материал с этой текстурой -->
+			<material name="checker_mat" texture="checker_tex"
+              texrepeat="8 8" texuniform="true" reflectance="0.2"/>
+
+		    <material name="black_glossy"
+              rgba="0 0 0 1"
+              specular="1"
+              shininess="1"
+              reflectance="0.1"/>
+    </asset>
+
+    <worldbody>
+        <light cutoff="50" pos="0 2 2" dir="0 -2 -2" diffuse="1.2 1.2 1.2"/>
+		<light cutoff="50" pos="0 -2 2" dir="0 2 -2" diffuse="1.2 1.2 1.2"/>
+
+
+        <!--<geom name="floor" type="plane" size="5 5 0.01" pos="0 0 0"
+      material="checker_mat" contype="1" conaffinity="1" friction="1.2 1.2 1.2"/>-->
+
+
+        <!-- 🔧 Фиксированная база -->
+        <body name="dummy_base" pos="0 0 0">
+            <inertial mass="100" pos="0 0 0.05" diaginertia="1 1 1"/>
+            <geom type="box" size="0.01 0.01 0.01" rgba="0 0 0 0"/>
+			<geom name="base_mesh_geom" type="mesh" mesh="base_mesh1"  pos="0 0 0" contype="0" conaffinity="0" mass="0.01"/>
+			<geom type="box" pos="0.0009 0.06 0.1" material="black_glossy" size="0.053 0.001 0.04"/>
+
+            <!-- 🚀 Робот начинается отсюда -->
+            <body name="Shoulder" pos="0 0 0">
+                <joint name="joint_0" type="hinge" axis="0 0 1"
+                       pos="0 0 0.16" limited="true" range="-2.7 2.7"
+                       stiffness="1000" damping="5" armature="0.01"/>
+
+                <geom type="sphere" size="0.003" pos="0 0 0.16"/>
+                <geom type="mesh" mesh="shoulder_mesh" mass="1"/>
+
+                <body name="Arm1" pos="0 0 0">
+                    <joint name="joint_1" type="hinge" axis="1 0 0" pos="0 0 0.24"
+                           range="-90 90" damping="4"/>
+                    <geom type="sphere" size="0.003" pos="0 0 0.24"/>
+                    <geom type="mesh" mesh="elbow_mesh0" mass="1"/>
+
+                    <body name="Arm2" pos="0 0 0">
+                        <joint name="joint_2" type="hinge" axis="1 0 0"
+                               pos="0 -0.009 0.4" range="-90 90" damping="4"/>
+                        <geom type="sphere" size="0.001" pos="0 -0.009 0.4"/>
+                        <geom type="mesh" mesh="arm1_mesh" mass="2"/>
+
+                        <body name="Elbow" pos="0 0 0">
+                            <joint name="joint_3" type="hinge" axis="0 0 1"
+                                   pos="-0.015 -0.0073 0.47" range="-90 90" damping="4"/>
+                            <geom type="sphere" size="0.003" pos="-0.015 -0.0073 0.47"/>
+                            <geom type="mesh" mesh="arm2_mesh" mass="2"/>
+
+                            <body name="Arm3" pos="0 0 0">
+                                <joint name="joint_4" type="hinge" axis="1 0 0"
+                                       pos="-0.015 -0.0073 0.548" range="-90 90" damping="4"/>
+                                <geom type="sphere" size="0.003" pos="-0.015 -0.0073 0.548"/>
+								<geom type="box" pos="-0.015 -0.007 0.692" material="black_glossy" size="0.0435 0.014 0.001"/>
+								<site name="camera_site" pos="-0.015 -0.007 0.693" size="0.0001" rgba="1 0 0 1"/>
+                                <geom type="mesh" mesh="arm31_mesh" mass="1" contype="1" conaffinity = "1"/>
+                                <site name="gripper_inner_site" pos="-0.015 0.015 0.785" size="0.006" rgba="1 0 0 0.5"/>
+
+                                <body name="Gripper" pos="0 0 0">
+                                    <joint name="joint_5" type="hinge" axis="1 0 0"
+                                           pos="-0.015 -0.03 0.657" range="-6 90" damping="4"/>
+                                    <geom type="sphere" size="0.003" pos="-0.015 -0.03 0.657"/>
+                                    <geom name="gripper_geom" type="mesh" mesh="gripper_mesh" mass="0.1" contype="1" conaffinity = "1"/>
+                                    <site name="gripper_upper_site" pos="-0.015 -0.015 0.785" size="0.0075" rgba="1 0 0 0.5"/>
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <sensor>
+        <touch name="gripper_lower_touch" site="gripper_inner_site"/>
+        <touch name="gripper_upper_touch" site="gripper_upper_site"/>
+    </sensor>
+
+    <actuator>
+        <general name="servo_0" joint="joint_0" class="strong_servo" ctrlrange="-3 3"/>
+        <general name="servo_1" joint="joint_1" class="servo" ctrlrange="-2.7 2.7"/>
+        <general name="servo_2" joint="joint_2" class="servo" ctrlrange="-2.6 2.6"/>
+        <general name="servo_3" joint="joint_3" class="servo" ctrlrange="-3.2 3.2"/>
+        <general name="servo_4" joint="joint_4" class="servo" ctrlrange="-3.2 3.2"/>
+        <general name="servo_5" joint="joint_5" class="servo" ctrlrange="-0.3 3.2"/>
+    </actuator>
+	<!--<actuator>
+		<position name="servo_0" joint="joint_0" kp="100" ctrlrange="-2.7 2.7"/>
+		<position name="servo_1" joint="joint_1" kp="100" ctrlrange="-1.57 1.57"/>
+		<position name="servo_2" joint="joint_2" kp="100" ctrlrange="-1.57 1.57"/>
+		<position name="servo_3" joint="joint_3" kp="100" ctrlrange="-1.57 1.57"/>
+		<position name="servo_4" joint="joint_4" kp="100" ctrlrange="-1.57 1.57"/>
+		<position name="servo_5" joint="joint_5" kp="100" ctrlrange="-0.1 1.57"/>
+	</actuator>-->
+
+</mujoco>

@@ -1,0 +1,197 @@
+<?xml version="1.0" ?>
+<robot name="robot_arm">
+
+  <!-- База -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="BASA.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="BASA.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Shoulder -->
+  <joint name="joint_0" type="revolute">
+    <parent link="base_link"/>
+    <child link="shoulder_link"/>
+    <origin xyz="0 0 0.18"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.7" upper="2.7" effort="10" velocity="1"/>
+  </joint>
+
+  <link name="shoulder_link">
+    <visual>
+      <origin xyz="0 0 -0.18"/>
+      <geometry>
+        <mesh filename="A.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.18"/>
+      <geometry>
+        <mesh filename="A.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Arm1 -->
+  <joint name="joint_1" type="revolute">
+    <parent link="shoulder_link"/>
+    <child link="arm1_link"/>
+    <origin xyz="0 0 0.06"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="10" velocity="1"/>
+  </joint>
+
+  <link name="arm1_link">
+    <visual>
+      <origin xyz="0 0 -0.23"/>
+      <geometry>
+        <mesh filename="A2.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.23"/>
+      <geometry>
+        <mesh filename="A2.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Arm2 -->
+  <joint name="joint_2" type="revolute">
+    <parent link="arm1_link"/>
+    <child link="arm2_link"/>
+    <origin xyz="0 0 0.17"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="10" velocity="1"/>
+  </joint>
+
+  <link name="arm2_link">
+    <visual>
+      <origin xyz="0 0 -0.39"/>
+      <geometry>
+        <mesh filename="A3.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 -0.39"/>
+      <geometry>
+        <mesh filename="A3.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Elbow -->
+  <joint name="joint_3" type="revolute">
+    <parent link="arm2_link"/>
+    <child link="elbow_link"/>
+    <origin xyz="-0.015 0 0.86"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="10" velocity="1"/>
+  </joint>
+
+  <link name="elbow_link">
+    <visual>
+      <origin xyz="0.015 0 -1.25"/>
+      <geometry>
+        <mesh filename="A4.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.015 0 -1.25"/>
+      <geometry>
+        <mesh filename="A4.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Arm3 -->
+  <joint name="joint_4" type="revolute">
+    <parent link="elbow_link"/>
+    <child link="arm3_link"/>
+    <origin xyz="0 0 -0.7"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="10" velocity="1"/>
+  </joint>
+
+  <link name="arm3_link">
+    <visual>
+      <origin xyz="0.015 0 -0.55"/>
+      <geometry>
+        <mesh filename="A5.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.015 0 -0.55"/>
+      <geometry>
+        <mesh filename="A5.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+   <link name="gripper_inner_site">
+    <visual>
+      <origin xyz="0 0.0058 0.115"/>
+      <geometry>
+        <box size="0.0 0.0 0.0"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="gripper_inner_site" type="fixed">
+    <parent link="arm3_link"/>
+    <child link="gripper_inner_site"/>
+    <origin xyz="0 0.0 0.23" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Gripper -->
+  <joint name="joint_5" type="revolute">
+    <parent link="arm3_link"/>
+    <child link="gripper_link"/>
+    <origin xyz="0.015 -0.035 0.11"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.1" upper="1.57" effort="10" velocity="1"/>
+  </joint>
+
+  <link name="gripper_link">
+    <visual>
+      <origin xyz="0 0.035 -0.66"/>
+      <geometry>
+        <mesh filename="GRIPPER.stl"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0.035 -0.66"/>
+      <geometry>
+        <mesh filename="GRIPPER.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="gripper_upper_site">
+    <visual>
+      <origin xyz="-0.008 0.012 0.06"/>
+      <geometry>
+        <box size="0.0 0.0 0.0"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="gripper_upper_site_joint" type="fixed">
+    <parent link="gripper_link"/>
+    <child link="gripper_upper_site"/>
+    <origin xyz="-0.016 0.024 0.12" rpy="0 0 0"/>
+  </joint>
+</robot>
