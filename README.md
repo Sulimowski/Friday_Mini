@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Sulimowski/Friday_Mini/FRIDAY_RL/{37CEDE61-1618-4E05-8D94-9A1F226398AE}.png" width="800"/>
+</p>
+
 # FRIDAY_Mini — Архитектура Пятницы
 
 > Добро пожаловать в проект **FRIDAY_SIM** — билет на порше с милфой 🤖
