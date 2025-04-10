@@ -16,7 +16,7 @@
 ![Progress](https://readme-typing-svg.herokuapp.com?font=Fira+Code&duration=2000&pause=500&color=2ED573&vCenter=true&multiline=true&width=435&height=50&lines=[█████-----------------]+20%25)
 
 ![preview]({37CEDE61-1618-4E05-8D94-9A1F226398AE}.png)     
-## Чудище уже берет кубик но нужно грамотно дообучать модель и разввивать ее навыки
+## Чудище уже берет кубик ✨😎✨
 
 # FRIDAY_Mini — Архитектура Пятницы
 
