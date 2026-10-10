@@ -1,101 +1,123 @@
-# FRIDAY Mini — Reinforcement Learning Robotic Grasping in PyBullet
+# FRIDAY Mini
 
-FRIDAY Mini is a reinforcement learning project focused on teaching a custom robot manipulator to approach and grasp a small block in simulation. The project uses **PyBullet** for physics, **Gymnasium** for environment interfaces, and **Stable-Baselines3 (PPO)** for policy optimization.
+Reinforcement learning for grasping with my own 6-joint robot arm in PyBullet. A PPO agent is trained from scratch on a fixed block, then fine-tuned on a block that moves when pushed.
 
-This repository demonstrates practical RL workflow skills relevant for robotics and applied ML portfolios: environment design, reward shaping, training stabilization, evaluation, and iterative fine-tuning.
+![Python](https://img.shields.io/badge/Python-3.10-3776AB?logo=python&logoColor=white)
+![PyBullet](https://img.shields.io/badge/PyBullet-1E88E5)
+![Gymnasium](https://img.shields.io/badge/Gymnasium-0081A5)
+![Stable-Baselines3](https://img.shields.io/badge/Stable--Baselines3-PPO-6A1B9A)
 
-## Project Goals
+<img src="{37CEDE61-1618-4E05-8D94-9A1F226398AE}.png" alt="FRIDAY Mini next to the target block in PyBullet" width="480">
 
-- Train a robotic arm to perform precise contact-based grasping.
-- Penalize unstable interactions (wrong contact, excessive object displacement, or stagnation).
-- Improve robustness from static scenarios to more dynamic interaction conditions.
-- Save reproducible checkpoints, normalization stats, and training logs.
+## Overview
 
-![preview]({37CEDE61-1618-4E05-8D94-9A1F226398AE}.png)  
+- The robot is my own model (URDF + STL meshes) with 6 revolute joints, the last one drives the gripper.
+- A grasp only counts when both gripper pads touch opposite sides of the block, so the agent cannot just bump into it.
+- The reward combines distance, contact, gripper orientation, a penalty for getting stuck and, in the second stage, a penalty for pushing the block.
+- Static training: 50 epochs of 10k steps (500k steps). Mean evaluation reward goes from about 0 to about 2,000.
+- The best static policy and its observation normalization stats are reused to fine-tune on a movable 0.5 kg block.
+- Every epoch is checkpointed; the best model is saved together with its `VecNormalize` stats.
 
-## Core Features
+```mermaid
+flowchart LR
+    A[Robot model<br/>URDF + STL] --> B[Static env<br/>fixed block]
+    B --> C[PPO + VecNormalize<br/>50 x 10k steps]
+    C --> D[(best_model.zip<br/>vecnormalize.pkl)]
+    D -- weights and obs stats --> E[Dynamic env<br/>0.5 kg block]
+    E --> F[Fine-tuned policy]
+```
 
-- **Custom Gymnasium environments** for static and dynamic grasping tasks.
-- **Dense reward shaping** based on distance, contact quality, orientation, and control stability.
-- **PPO training pipeline** with model checkpointing and early stopping.
-- **Observation/Reward normalization** through `VecNormalize`.
-- **Evaluation scripts** for visual policy replay in PyBullet GUI mode.
-- **Training analytics** via saved reward logs and learning curves.
+## Environments
 
-## Tech Stack
+| | Static (`grasp_env.py`) | Dynamic (`grasp_env_dynamic.py`) |
+| --- | --- | --- |
+| Block | fixed, with a contact pad on each side | 0.5 kg, moves when pushed |
+| Action | change of each joint angle, up to ±0.2 rad per step | same |
+| Control | position control, 5 physics substeps at 240 Hz (about 48 Hz per action) | same |
+| Observation (21 values) | joint angles, gripper position, block position, vector to the block, vectors to both pads | same layout, pad vectors are zeros, so the static policy loads without changes |
+| Episode end | success, stuck for 30+ steps, or 500 steps | success, block pushed more than 8 cm, or 500 steps |
 
-- Python
-- PyBullet
-- Gymnasium
-- Stable-Baselines3 (PPO)
-- NumPy, Pandas, Matplotlib
+## Reward
 
-## Repository Structure
+Static env:
+
+| Term | Value |
+| --- | --- |
+| Step penalty | −0.01 |
+| Approach, for each pad | +5 · exp(−50 · d) |
+| Both pads in contact | +25, up to +3 more when the gripper points down |
+| Contact with a tilted gripper (alignment < 0.5) | −5 · (1 − alignment) |
+| Only one pad in contact | −2 |
+| Success: both pads within 2.5 cm, alignment > 0.8 | +50, episode ends |
+| Stuck for more than 30 steps | −5, episode ends |
+
+Dynamic env:
+
+| Term | Value |
+| --- | --- |
+| Approach | +1 · exp(−50 · d) |
+| Contact | +1.5, +2.5 more within 3 cm |
+| Success: contact within 2 cm, block moved less than 1.5 cm | +15, episode ends |
+| Block moved more than 1.5 cm | up to −2, smooth (tanh) |
+| Block pushed more than 8 cm | −3 and reset |
+
+## Results
+
+<img src="logs/training_curve.png" alt="Mean evaluation reward per epoch" width="520">
+
+Mean reward of 5 deterministic evaluation episodes after each epoch. Learning takes off after about 150k steps, peaks near 2,400 and stays around 2,000 for the last 10 epochs.
+
+## Training settings
+
+| Parameter | Value |
+| --- | --- |
+| Algorithm | PPO, `MlpPolicy` |
+| `n_steps` / `batch_size` / `n_epochs` | 4096 / 256 / 15 |
+| `learning_rate` / `clip_range` | 2e-4 / 0.15 |
+| `gamma` / `gae_lambda` / `ent_coef` | 0.99 / 0.95 / 0.01 |
+| Normalization | `VecNormalize` on observations |
+| Evaluation | 5 episodes after every 10k steps |
+| Early stopping | patience 30 epochs, plus a plateau check |
+
+## Repository structure
 
 ```text
 .
-├── grasp_env.py               # Static grasping environment
-├── grasp_env_dynamic.py       # Dynamic/fine-tuning environment
-├── train.py                   # PPO training on static environment
-├── train_dynamic.py           # Fine-tuning pipeline for dynamic environment
-├── test.py                    # Visual test for static policy
-├── test_dynamic.py            # Visual test for dynamic policy
-├── pretty_mukoco/             # Robot URDF/XML/STL assets
-├── models/                    # Saved checkpoints and normalization files
-└── logs/                      # Reward logs and training curve plots
+├── grasp_env.py               # static environment
+├── grasp_env_dynamic.py       # dynamic environment
+├── train.py                   # PPO training, static
+├── train_dynamic.py           # transfer and fine-tuning, dynamic
+├── test.py                    # replay of the static policy in the PyBullet GUI
+├── test_dynamic.py            # replay of the fine-tuned policy
+├── pretty_mukoco/             # robot URDF / MJCF and STL meshes
+├── models/                    # checkpoints, best model, VecNormalize stats
+└── logs/                      # reward logs and training curves
 ```
 
-## Quick Start
-
-### 1) Clone
+## Running
 
 ```bash
 git clone https://github.com/Sulimowski/Friday_Mini.git
 cd Friday_Mini
-```
-
-### 2) Install dependencies
-
-```bash
 pip install pybullet gymnasium stable-baselines3 numpy pandas matplotlib
 ```
 
-### 3) Train base policy
+The environments load the robot from an absolute path. Change `loadURDF(...)` in `grasp_env.py` and `grasp_env_dynamic.py` to `pretty_mukoco/FRIDAY_MINI.urdf` before running.
 
 ```bash
-python train.py
+python test.py            # watch the trained policy, weights are in models/
+python train.py           # train from scratch
+python train_dynamic.py   # fine-tune on the movable block
+python test_dynamic.py    # watch the fine-tuned policy
 ```
 
-### 4) Evaluate (GUI)
+## Next steps
 
-```bash
-python test.py
-```
-
-### 5) Fine-tune on dynamic setup
-
-```bash
-python train_dynamic.py
-python test_dynamic.py
-```
-
-## Notes for Reproducibility
-
-- The environments currently load the robot URDF from a local absolute path in code. Update this path to your local repository path before running training/evaluation.
-- Trained checkpoints and normalization statistics are versioned in `models/`.
-- Learning curves and reward logs are written to `logs/`.
-
-## Portfolio Value
-
-This project highlights:
-
-- End-to-end RL experimentation workflow.
-- Practical reward engineering for robotics behavior.
-- Iterative policy improvement from baseline to fine-tuned variants.
-- Working with simulation assets and custom robot kinematics in PyBullet.
+- Random block position and size (now it is always at x = 0.3, y = 0.2)
+- Report grasp success rate, not only mean reward
+- Relative paths to assets and a `requirements.txt`
+- Move to MuJoCo with a hierarchical agent: a high-level policy picks the skill, PPO / SAC primitives execute it
 
 ## Author
 
-**Sulimowski**
-
-
+Mykhailo Sulimovskyi · [LinkedIn](https://linkedin.com/in/misha-sulimovskiy-9809572b3) · [Sim2Real, dual-arm UR5 project](https://github.com/Sulimowski/Sim2Real) · 2005.sulimovsky@gmail.com
